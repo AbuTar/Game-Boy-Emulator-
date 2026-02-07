@@ -1,2 +1,2 @@
-# Game-Boy-Emulator-
+# Game-Boy-Emulator
 A GameBoy Emulator written in C
