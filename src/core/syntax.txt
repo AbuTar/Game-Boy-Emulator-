@@ -1,0 +1,6 @@
+### Formating Strings
+E.g. '%02X':
+%   - "Insert a variable here"
+0   - "Pad with 0s if necessary"
+2   - "Make it at least 2 characters wide"
+X   - "Display as hex"
