@@ -1,0 +1,17 @@
+// File to help me understand what I'm doing
+
+
+The Game Boy uses a Sharp LR35902 CPU
+
+# Registers
+
+The Game Boy has 8 8-bit General Purpose Registers as well as 2 16-bit registers
+
+# Flags
+
+F Register bits: Z N H C 0 0 0 0  Bits 0-3 always set to 0
+                 │ │ │ │
+                 │ │ │ └─ Carry (C): Did the result overflow?
+                 │ │ └─── Half-Carry (H): Did bits 0-3 overflow into bit 4?
+                 │ └───── Subtraction (N): Was this a subtraction?
+                 └─────── Zero (Z): Is the result zero?
