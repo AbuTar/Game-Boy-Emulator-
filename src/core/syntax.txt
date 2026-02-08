@@ -1,6 +1,150 @@
-### Formating Strings
+# Types and type aliases
+
+In C there are different types (as expected) and we can add aliases to make it easier to reference these types
+E.g. uint8_t, uint16_t 
+These become u8 and u16 if we give them aliases:
+E.g. typdef uint8_t 8;
+
+
+# Directives and Guards
+
+#include<library.h>
+#include "<headerfile name>.h"
+
+Guards prevents us from including the same file multiple times during compilation
+Usecase:
+#ifndef CPU_H
+#define CPU_H
+
+....... header content ........
+#endif
+
+
+Defintions:
+We can use labels to replace certain values: 
+E.g.
+    #define FLAG_Z 0x80     // Text replacement: FLAG_Z → 0x80
+    #define FLAG_N 0x40
+    #define FLAG_H 0x20
+    #define FLAG_C 0x10
+
+
+# Structs and Pointers
+
+Usecase:
+    typedef struct{ // typedef eliminates the need for writing struct CPU everytime
+        u8 A;
+        u8 F;
+        .....
+    } CPU;
+
+    CPU cpu;   // Creating a variable
+    cpu.A      // Accessing a val
+
+    // Pointers will change the actual value, not just the "copy" variable
+    E.g.    void bad_init(CPU cpu){
+                cpu.A = 0xFF;
+    }
+            void good_init (CPU* cpu){
+                cpu->A = 0xFF;
+            }
+
+    * and & are used to implement Pointers
+    - following a type with * : it's a pointer e.g. u8* ptr, "ptr is a pointer"
+    - ptr = &age : & gets the address of age 
+    - *ptr = 100 : go to address reference by pointer and set value at that address to 100
+    - ptr->A : go to address refernce by pointer and set value at that address to A
+
+# Function Pointers
+    Take u16 (*getter)(CPU*);
+    Where: u16 - return type
+           (*getter) - pointer name
+           (CPU*) - param types
+
+    This is useful for reusing the same function which takes different functions as params:
+    e.g.
+    void ld_reg_reg(CPU* cpu, u8* dest, u16 (*getaddr)(CPU*)){
+        u16 address = get_addr(cpu);
+        *dest = memory_read(address)
+    }
+
+    This basically means it will call the function passed in taking a struct variable as a param 
+
+        
+# Bitwise Operations
+
+AND (&) - Extracts bits
+OR (|) - Sets bits
+XOR (^) - Toggles bits
+NOT (~)- Flips bits
+Left-Shift (<<) - multiplies by 2^n 
+Right-Shift (>>) - divides by 2^n 
+
+# Casting (Implict & Explicit)
+
+E.g. u8 byte = 155
+u16 word = (u16)byte // Explicity converts the 8-bit to a 16-bit number
+u8 a = 100; u8 b = 200;
+u16 = result a + b; (converts implicity to a 16-bit integer 300)
+u8 truncated = result (converts implicity to 8-bit number 44)
+
+# Control Structures
+
+if/else/while/for (){
+
+}
+
+switch(){
+    case a:
+        break;
+    case b:
+        break;
+    default:
+        break;
+}
+
+# Memory Allocation
+
+void function(){
+    u8 array[256];
+    CPU cpu;
+    // When function terminates, stack is freed 
+}
+
+static u8 memory[0x10000]  // 64KB array
+
+# Function Definitions and Declarations
+
+Declaration in header(.h) file:
+    void cpu_init(CPU* cpu);
+    u16 get_hl(CPU* cpu);
+    void ld_reg_reg(CPU* cpu, u8* dest, u8 src);
+
+Defintition in program file (.c):
+    coid cpu_init(CPU* cpu){
+        cpu->A = 0x00;
+        cpu->pc = 0x100
+    }
+
+Printf Format Specifiers:
+printf("Decimal: %d\n", 42);           // Signed decimal
+printf("Unsigned: %u\n", 255);         // Unsigned decimal
+printf("Hex: 0x%02X\n", 0xAB);         // Hex (uppercase), 2 digits, zero-padded
+printf("Hex: 0x%04X\n", 0x1234);       // Hex, 4 digits
+printf("Character: %c\n", 'A');        // Character
+printf("String: %s\n", "Hello");       // String
+printf("Pointer: %p\n", &cpu);         // Pointer address
+
+
+
+#Formating Strings
 E.g. '%02X':
 %   - "Insert a variable here"
 0   - "Pad with 0s if necessary"
 2   - "Make it at least 2 characters wide"
 X   - "Display as hex"
+
+
+# Function Calls
+Calling a function before it's declaration in the code confuses the compiler
+- To fix this, we can either have functionc calls after defintions or use declarations in a .h file

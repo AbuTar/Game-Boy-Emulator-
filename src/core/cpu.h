@@ -59,7 +59,12 @@ void cpu_execute_cb(CPU* cpu, u8 opcode); // Executes special instructions
 void set_flag(CPU* cpu, u8 flag, bool set);
 bool get_flag(CPU* cpu, u8 flag);
 
+// Function Declarations
 
-
+void ld_reg_mem(CPU cpu, u8* dest, u16 addr);
+void ld_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg);
+void ld_pair_reg(CPU* cpu, u8* dest_reg, u16 addr);
+void ld_reg_pair(CPU* cpu, u16 addr, u8 src_reg);
+void ld_reg_imm(CPU* cpu, u8* dest_reg);
 
 #endif
