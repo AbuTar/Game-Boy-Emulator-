@@ -6,10 +6,10 @@
 #include <stdbool.h>
 
 // CPU Flags
-#define FLAG_Z 0x80
-#define FLAG_N 0x40
-#define FLAG_H 0x20
-#define FLAG_C 0x10
+#define FLAG_Z 0x80 // 1000 0000
+#define FLAG_N 0x40 // 0100 0000
+#define FLAG_H 0x20 // 0010 0000
+#define FLAG_C 0x10 // 0001 0000
 
 // CPU Components
 
@@ -27,6 +27,7 @@ typedef struct {
     // CPU States
 
     bool isHalted; // HALT instruction
+    bool awake; // Flag used to exit HALT
     bool ime; // Interrupt Enabled
 
     u64 cycles; // Total clock cycles executed
@@ -66,5 +67,13 @@ void ld_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg);
 void ld_pair_reg(CPU* cpu, u8* dest_reg, u16 addr);
 void ld_reg_pair(CPU* cpu, u16 addr, u8 src_reg);
 void ld_reg_imm(CPU* cpu, u8* dest_reg);
+void ld_imm_pair(CPU* cpu, u16 addr);
+void inc_reg(CPU* cpu, u8* reg);
+void lda_reg_hl_inc(CPU* cpu);
+void lda_reg_hl_dec(CPU* cpu);
+void lda_hl_reg_inc(CPU* cpu);
+void lda_hl_reg_dec(CPU* cpu);
+void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg);
+void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src_reg);
 
 #endif

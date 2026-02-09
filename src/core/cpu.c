@@ -54,6 +54,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x02:
+
             break;
         case 0x03:
             break;
@@ -82,9 +83,115 @@ void cpu_execute(CPU* cpu, u8 opcode){
         case 0x0F:
             break;
 
-        // 0x10 - 0x1F
-        // 0x20 - 0x2F
-        // 0x30 - 0x3F
+        // ==================== 0x10 - 0x1F ====================
+
+        case 0x10: 
+            break;
+        case 0x11:
+            break;
+        case 0x12:
+            break;
+        case 0x13:
+            break;
+        case 0x14:
+            break;
+        case 0x15:
+            break;
+        case 0x16:
+            break;
+        case 0x17:
+            break;
+        case 0x18:
+            break;
+        case 0x19:
+            break;
+        case 0x1A:
+            break;
+        case 0x1B:
+            break;
+        case 0x1C:
+            break;
+        case 0x1D:
+            break;
+        case 0x1E:
+            break;
+        case 0x1F:
+            break;
+        // ==================== 0x20 - 0x2F ====================
+
+        case 0x20: 
+            break;
+        case 0x21:
+            break;
+        case 0x22:
+            lda_reg_hl_inc(cpu);
+            cpu->cycles += 8;
+            break;
+        case 0x23:
+            break;
+        case 0x24:
+            break;
+        case 0x25:
+            break;
+        case 0x26:
+            break;
+        case 0x27:
+            break;
+        case 0x28:
+            break;
+        case 0x29:
+            break;
+        case 0x2A:
+            lda_hl_reg_inc(cpu);
+            cpu->cycles += 8;
+            break;
+        case 0x2B:
+            break;
+        case 0x2C:
+            break;
+        case 0x2D:
+            break;
+        case 0x2E:
+            break;
+        case 0x2F:
+            break;
+        // ==================== 0x30 - 0x3F ====================
+        case 0x30: 
+            break;
+        case 0x31:
+            break;
+        case 0x32:
+            lda_reg_hl_dec(cpu);
+            cpu->cycles += 8;
+            break;
+        case 0x33:
+            break;
+        case 0x34:
+            break;
+        case 0x35:
+            break;
+        case 0x36:
+            break;
+        case 0x37:
+            break;
+        case 0x38:
+            break;
+        case 0x39:
+            break;
+        case 0x3A:
+            lda_reg_hl_dec(cpu);
+            cpu->cycles += 8;
+            break;
+        case 0x3B:
+            break;
+        case 0x3C:
+            break;
+        case 0x3D:
+            break;
+        case 0x3E:
+            break;
+        case 0x3F:
+            break;
 
         // ==================== 0x40 - 0x4F ====================
         case 0x40:
@@ -159,7 +266,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
 
         case 0x4E:
             ld_pair_reg(cpu, &cpu->B, get_hl(cpu)); // HL to C
-            cpu->cycles += 4;
+            cpu->cycles += 8;
             break;
 
         case 0x4F:
@@ -170,81 +277,529 @@ void cpu_execute(CPU* cpu, u8 opcode){
         // ==================== 0x50 - 0x5F ====================
 
         case 0x50:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->B); // B to D
             cpu->cycles += 4;
             break;
         
         case 0x51:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->C); // C to D
             cpu->cycles += 4;
             break;
         
         case 0x52:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->D); // D to D
             cpu->cycles += 4;
             break;
 
         case 0x53:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->E); // E to D
             cpu->cycles += 4;
             break;
 
         case 0x54:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->H); // H to D
             cpu->cycles += 4;
             break;
 
         case 0x55:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->L); // L to D
             cpu->cycles += 4;
             break;
 
         case 0x56:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
-            cpu->cycles += 4;
+            ld_reg_reg(cpu, &cpu->D, get_hl(cpu)); // HL to D
+            cpu->cycles += 8;
             break;
 
         case 0x57:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->D, cpu->A); // A to D
             cpu->cycles += 4;
             break;
 
         case 0x58:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->B); // B to E
             cpu->cycles += 4;
             break;
 
         case 0x59:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->C); // C to E
             cpu->cycles += 4;
             break;
 
         case 0x5A:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->D); // D to E
             cpu->cycles += 4;
             break;
 
         case 0x5B:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->E); // E to E
             cpu->cycles += 4;
             break;
 
         case 0x5C:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->H); // H to E
             cpu->cycles += 4;
             break;
 
         case 0x5D:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
+            ld_reg_reg(cpu, &cpu->E, cpu->L); // L to E
             cpu->cycles += 4;
             break;
 
         case 0x5E:
-            ld_reg_reg(cpu, &cpu->D, cpu->D);
-            cpu->cycles += 4;
+            ld_reg_reg(cpu, &cpu->E, get_hl(cpu)); // HL to E
+            cpu->cycles += 8;
             break;
         
         case 0x5F:
+            ld_reg_reg(cpu, &cpu->E, cpu->A); // A to E
+            cpu->cycles += 4;
+            break;
+
+
+        // ==================== 0x60 - 0x6F ====================
+
+        case 0x60:
+            ld_reg_reg(cpu, &cpu->H, cpu->B); // B to H
+            cpu->cycles += 4;
+            break;
+        
+        case 0x61:
+            ld_reg_reg(cpu, &cpu->H, cpu->C); // C to H
+            cpu->cycles += 4;
+            break;
+        
+        case 0x62:
+            ld_reg_reg(cpu, &cpu->H, cpu->D); // D to H
+            cpu->cycles += 4;
+            break;
+
+        case 0x63:
+            ld_reg_reg(cpu, &cpu->H, cpu->E); // E to H
+            cpu->cycles += 4;
+            break;
+
+        case 0x64:
+            ld_reg_reg(cpu, &cpu->H, cpu->H); // H to H
+            cpu->cycles += 4;
+            break;
+
+        case 0x65:
+            ld_reg_reg(cpu, &cpu->H, cpu->L); // L to H
+            cpu->cycles += 4;
+            break;
+
+        case 0x66:
+            ld_reg_reg(cpu, &cpu->H, get_hl(cpu)); // HL to H
+            cpu->cycles += 8;
+            break;
+
+        case 0x67:
+            ld_reg_reg(cpu, &cpu->H, cpu->A); // A to H
+            cpu->cycles += 4;
+            break;
+
+        case 0x68:
+            ld_reg_reg(cpu, &cpu->L, cpu->B); // B to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x69:
+            ld_reg_reg(cpu, &cpu->L, cpu->C); // C to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x6A:
+            ld_reg_reg(cpu, &cpu->L, cpu->D); // D to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x6B:
+            ld_reg_reg(cpu, &cpu->L, cpu->E); // E to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x6C:
+            ld_reg_reg(cpu, &cpu->L, cpu->H); // H to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x6D:
+            ld_reg_reg(cpu, &cpu->L, cpu->L); // L to L
+            cpu->cycles += 4;
+            break;
+
+        case 0x6E:
+            ld_reg_reg(cpu, &cpu->L, get_hl(cpu)); // HL to L
+            cpu->cycles += 8;
+            break;
+        
+        case 0x6F:
+            ld_reg_reg(cpu, &cpu->L, cpu->A); // A to L
+            cpu->cycles += 4;
+            break;
+        
+            
+        // ==================== 0x70 - 0x7F ====================
+
+        case 0x70:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->B); // B to HL
+            cpu->cycles += 8;
+            break;
+        
+        case 0x71:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->C); // C to HL
+            cpu->cycles += 8;
+            break;
+        
+        case 0x72:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->D); // D to HL
+            cpu->cycles += 8;
+            break;
+
+        case 0x73:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->E); // E to HL
+            cpu->cycles += 8;
+            break;
+
+        case 0x74:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->H); // H to HL
+            cpu->cycles += 8;
+            break;
+
+        case 0x75:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->L); // L to HL
+            cpu->cycles += 8;
+            break;
+
+        case 0x76:
+        // Need to implement fix for famous HLAT bug
+            cpu->isHalted = true; // HALT CPU
+            cpu->cycles += 4;
+            break;
+
+        case 0x77:
+            ld_reg_pair(cpu, get_hl(cpu), cpu->A); // A to HL
+            cpu->cycles += 4;
+            break;
+
+        case 0x78:
+            ld_reg_reg(cpu, &cpu->A, cpu->B); // B to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x79:
+            ld_reg_reg(cpu, &cpu->A, cpu->C); // C to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x7A:
+            ld_reg_reg(cpu, &cpu->A, cpu->D); // D to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x7B:
+            ld_reg_reg(cpu, &cpu->A, cpu->E); // E to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x7C:
+            ld_reg_reg(cpu, &cpu->A, cpu->H); // H to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x7D:
+            ld_reg_reg(cpu, &cpu->A, cpu->L); // L to A
+            cpu->cycles += 4;
+            break;
+
+        case 0x7E:
+            ld_reg_reg(cpu, &cpu->A, get_hl(cpu)); // HL to A
+            cpu->cycles += 8;
+            break;
+        
+        case 0x7F:
+            ld_reg_reg(cpu, &cpu->A, cpu->A); // A to A
+            cpu->cycles += 4;
+            break;
+
+        // ==================== 0x80 - 0x8F ====================
+
+        case 0x80: 
+            break;
+        case 0x81:
+            break;
+        case 0x82:
+            break;
+        case 0x83:
+            break;
+        case 0x84:
+            break;
+        case 0x85:
+            break;
+        case 0x86:
+            break;
+        case 0x87:
+            break;
+        case 0x88:
+            break;
+        case 0x89:
+            break;
+        case 0x8A:
+            break;
+        case 0x8B:
+            break;
+        case 0x8C:
+            break;
+        case 0x8D:
+            break;
+        case 0x8E:
+            break;
+        case 0x8F:
+            break;
+
+        // ==================== 0x90 - 0x9F ====================
+
+        case 0x90: 
+            break;
+        case 0x91:
+            break;
+        case 0x92:
+            break;
+        case 0x93:
+            break;
+        case 0x94:
+            break;
+        case 0x95:
+            break;
+        case 0x96:
+            break;
+        case 0x97:
+            break;
+        case 0x98:
+            break;
+        case 0x99:
+            break;
+        case 0x9A:
+            break;
+        case 0x9B:
+            break;
+        case 0x9C:
+            break;
+        case 0x9D:
+            break;
+        case 0x9E:
+            break;
+        case 0x9F:
+            break;
+
+        // ==================== 0xA0 - 0xAF ====================
+
+        case 0xA0: 
+            break;
+        case 0xA1:
+            break;
+        case 0xA2:
+            break;
+        case 0xA3:
+            break;
+        case 0xA4:
+            break;
+        case 0xA5:
+            break;
+        case 0xA6:
+            break;
+        case 0xA7:
+            break;
+        case 0xA8:
+            break;
+        case 0xA9:
+            break;
+        case 0xAA:
+            break;
+        case 0xAB:
+            break;
+        case 0xAC:
+            break;
+        case 0xAD:
+            break;
+        case 0xAE:
+            break;
+        case 0xAF:
+            break;
+
+        // ==================== 0xB0 - 0xBF ====================
+
+        case 0xB0: 
+            break;
+        case 0xB1:
+            break;
+        case 0xB2:
+            break;
+        case 0xB3:
+            break;
+        case 0xB4:
+            break;
+        case 0xB5:
+            break;
+        case 0xB6:
+            break;
+        case 0xB7:
+            break;
+        case 0xB8:
+            break;
+        case 0xB9:
+            break;
+        case 0xBA:
+            break;
+        case 0xBB:
+            break;
+        case 0xBC:
+            break;
+        case 0xBD:
+            break;
+        case 0xBE:
+            break;
+        case 0xBF:
+            break;
+
+        // ==================== 0xC0 - 0xCF ====================
+
+        case 0xC0: 
+            break;
+        case 0xC1:
+            break;
+        case 0xC2:
+            break;
+        case 0xC3:
+            break;
+        case 0xC4:
+            break;
+        case 0xC5:
+            break;
+        case 0xC6:
+            break;
+        case 0xC7:
+            break;
+        case 0xC8:
+            break;
+        case 0xC9:
+            break;
+        case 0xCA:
+            break;
+        case 0xCB:
+            break;
+        case 0xCC:
+            break;
+        case 0xCD:
+            break;
+        case 0xCE:
+            break;
+        case 0xCF:
+            break;
+
+        // ==================== 0xD0 - 0xDF ====================
+
+        case 0xD0: 
+            break;
+        case 0xD1:
+            break;
+        case 0xD2:
+            break;
+        case 0xD3:
+            break;
+        case 0xD4:
+            break;
+        case 0xD5:
+            break;
+        case 0xD6:
+            break;
+        case 0xD7:
+            break;
+        case 0xD8:
+            break;
+        case 0xD9:
+            break;
+        case 0xDA:
+            break;
+        case 0xDB:
+            break;
+        case 0xDC:
+            break;
+        case 0xDD:
+            break;
+        case 0xDE:
+            break;
+        case 0xDF:
+            break;
+        // ==================== 0xE0 - 0xEF ====================
+
+        case 0xE0: 
+            break;
+        case 0xE1:
+            break;
+        case 0xE2:
+            break;
+        case 0xE3:
+            break;
+        case 0xE4:
+            break;
+        case 0xE5:
+            break;
+        case 0xE6:
+            break;
+        case 0xE7:
+            break;
+        case 0xE8:
+            break;
+        case 0xE9:
+            break;
+        case 0xEA:
+            break;
+        case 0xEB:
+            break;
+        case 0xEC:
+            break;
+        case 0xED:
+            break;
+        case 0xEE:
+            break;
+        case 0xEF:
+            break;
+
+        // ==================== 0xF0 - 0xFF ====================
+
+        case 0xF0: 
+            break;
+        case 0xF1:
+            break;
+        case 0xF2:
+            break;
+        case 0xF3:
+            break;
+        case 0xF4:
+            break;
+        case 0xF5:
+            break;
+        case 0xF6:
+            break;
+        case 0xF7:
+            break;
+        case 0xF8:
+            break;
+        case 0xF9:
+            break;
+        case 0xFA:
+            break;
+        case 0xFB:
+            break;
+        case 0xFC:
+            break;
+        case 0xFD:
+            break;
+        case 0xFE:
+            break;
+        case 0xFF:
             break;
         
 
@@ -263,10 +818,10 @@ void cpu_execute(CPU* cpu, u8 opcode){
         
             
 
-        case 0x3E: // LD A, d8
-            cpu->A = memory_read(cpu->pc++);
-            cpu->cycles += 8;
-            break;
+        // case 0x3E0: // LD A, d8
+        //     cpu->A = memory_read(cpu->pc++);
+        //     cpu->cycles += 8;
+        //     break;
         
         // case 0x96: // LD B, d8 
         //     cpu->B = memory_read(cpu->pc++);
@@ -278,28 +833,28 @@ void cpu_execute(CPU* cpu, u8 opcode){
         //     cpu->cycles += 8;
         //     break;
 
-        case 0x80: // ADD A, B
-            cpu->A = cpu->A + cpu->B;
-            cpu->cycles += 4;
-            break;
+        // case 0x800: // ADD A, B
+        //     cpu->A = cpu->A + cpu->B;
+        //     cpu->cycles += 4;
+        //     break;
 
-        case 0x21: {
-            u8 lowerByte = memory_read(cpu->pc++);
-            u8 higherByte = memory_read(cpu->pc++);
-            set_hl(cpu, (higherByte << 8) | lowerByte);
-            cpu->cycles += 12;
-            break;
-        }
+        // case 0x210: {
+        //     u8 lowerByte = memory_read(cpu->pc++);
+        //     u8 higherByte = memory_read(cpu->pc++);
+        //     set_hl(cpu, (higherByte << 8) | lowerByte);
+        //     cpu->cycles += 12;
+        //     break;
+        // }
 
-        case 0x77: // LD (HL), A
-            memory_write(get_hl(cpu), cpu-> A);
-            cpu->cycles += 8;
-            break;
+        // case 0x770: // LD (HL), A
+        //     memory_write(get_hl(cpu), cpu-> A);
+        //     cpu->cycles += 8;
+        //     break;
 
-        case 0x76: // HALT
-            cpu->isHalted = true;
-            cpu->cycles += 4;
-            break;
+        // case 0x760: // HALT
+        //     cpu->isHalted = true;
+        //     cpu->cycles += 4;
+        //     break;
 
         default:
             printf("Unknown opcode: 0x%02X at PC: 0x%04X\n", opcode, cpu->pc - 1);
@@ -326,6 +881,70 @@ void ld_reg_pair(CPU* cpu, u16 addr, u8 src_reg){
 void ld_reg_imm(CPU* cpu, u8* dest_reg){
     *dest_reg = memory_read(cpu->pc++);
 }
+
+void inc_reg(CPU* cpu, u8* reg){
+    (*reg)++;
+}
+
+// void inc_pair(CPU* cpu, u16 addr){
+//     memory_read
+// }
+
+void lda_reg_hl_inc(CPU* cpu){ // 0x22
+    u16 address = get_hl(cpu);
+    memory_write(address, cpu->A);
+    set_hl(cpu, address + 1) ;
+}
+
+void lda_reg_hl_dec(CPU* cpu){ // 0x32
+    u16 address = get_hl(cpu);
+    memory_write(address, cpu->A);
+    set_hl(cpu, address - 1);
+}
+
+void lda_hl_reg_inc(CPU* cpu){ // 0x2A
+    u16 address = memory_read(get_hl(cpu));
+    cpu->A = address;
+    set_hl(cpu, address+1);
+
+}
+
+void lda_hl_reg_dec(CPU* cpu){ // 0x3A
+    u16 address = memory_read(get_hl(cpu));
+    cpu->A = address;
+    set_hl(cpu, address-1);
+}
+
+void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg) {
+    u16 result = *dest_reg + src_reg;
+    
+    set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
+    set_flag(cpu, FLAG_N, false);
+    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src_reg & 0xF)) > 0xF);
+    set_flag(cpu, FLAG_C, result > 0xFF);
+    
+    *dest_reg = result & 0xFF;
+}
+
+void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src_reg){
+    u8 carry = get_flag(cpu, FLAG_C) ? 1 : 0; // Set carry to 1 if true, 0 if false
+    u16 result = *dest_reg + src_reg + carry;
+
+    set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
+    set_flag(cpu, FLAG_N, false);
+    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src_reg & 0xF) + carry) > 0xF);
+    set_flag(cpu, FLAG_C, result > 0xFF);
+
+    *dest_reg = (u8)(result & 0xFF);
+
+}
+
+// void ld_imm_pair(CPU* cpu, u16 addr){
+//     u8 lower = memory_read(cpu->pc++);
+//     u8 upper = memory_read(cpu->pc++);
+//     u16 result = ((u16)) 
+
+// }
 
 
 
