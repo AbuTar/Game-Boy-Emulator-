@@ -47,7 +47,7 @@ void set_af(CPU* cpu, u16 val);
 void set_bc(CPU* cpu, u16 val);
 void set_de(CPU* cpu, u16 val);
 void set_hl(CPU* cpu, u16 val);
-
+void set_sp(CPU* cpu, u16 val);
 // CPU Functions
 
 void cpu_init(CPU* cpu); // Initialises CPU
@@ -75,5 +75,11 @@ void lda_hl_reg_inc(CPU* cpu);
 void lda_hl_reg_dec(CPU* cpu);
 void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg);
 void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src_reg);
+void sub_reg(CPU* cpu, u8* dest_reg, u8 src);
+void sbc_reg_carry(CPU* cpu, u8* dest_reg, u8 src);
+void and_reg(CPU* cpu, u8* dest_reg, u8 src);
+void xor_reg(CPU* cpu, u8* dest_reg, u8 src);
+void or_reg(CPU* cpu, u8* dest_reg, u8 src);
+void cp_reg(CPU* cpu, u8* dest_reg, u8 src);
 
 #endif

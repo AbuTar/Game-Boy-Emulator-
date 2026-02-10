@@ -540,190 +540,333 @@ void cpu_execute(CPU* cpu, u8 opcode){
         // ==================== 0x80 - 0x8F ====================
 
         case 0x80: 
-            add_reg_reg(cpu, &cpu->A, cpu->B); // Add B to A
+            add_reg(cpu, &cpu->A, cpu->B); // Add B to A
             cpu->cycles += 4; 
             break;
 
         case 0x81:
-            add_reg_reg(cpu, &cpu->A, cpu->C); // Add C to A
+            add_reg(cpu, &cpu->A, cpu->C); // Add C to A
             cpu->cycles += 4; 
             break;
 
         case 0x82:
-            add_reg_reg(cpu, &cpu->A, cpu->D); // Add D to A
+            add_reg(cpu, &cpu->A, cpu->D); // Add D to A
             cpu->cycles += 4; 
             break;
             
         case 0x83:
-            add_reg_reg(cpu, &cpu->A, cpu->E); // Add E to A
+            add_reg(cpu, &cpu->A, cpu->E); // Add E to A
             cpu->cycles += 4; 
             break;
             
         case 0x84:
-            add_reg_reg(cpu, &cpu->A, cpu->H); // Add H to A
+            add_reg(cpu, &cpu->A, cpu->H); // Add H to A
             cpu->cycles += 4; 
             break;
             
         case 0x85:
-            add_reg_reg(cpu, &cpu->A, cpu->L); // Add L to A
+            add_reg(cpu, &cpu->A, cpu->L); // Add L to A
             cpu->cycles += 4; 
             break;
             
         case 0x86:
-            add_reg_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A
+            add_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A
             cpu->cycles += 8; 
             break;
             
         case 0x87:
-            add_reg_reg(cpu, &cpu->A, cpu->A); // Add A to A  
+            add_reg(cpu, &cpu->A, cpu->A); // Add A to A  
             cpu->cycles += 4; 
             break;
             
         case 0x88:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->B); // Add B to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->B); // Add B to A w Carry
             cpu->cycles += 4; 
             break;
             
         case 0x89:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->C); // Add C to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->C); // Add C to A w Carry
             cpu->cycles += 4; 
             break;
             
         case 0x8A:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->D); // Add D to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->D); // Add D to A w Carry
             cpu->cycles += 4; 
             break;
             
         case 0x8B:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->E); // Add E to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->E); // Add E to A w Carry
             cpu->cycles += 4; 
             break;
             
         case 0x8C:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->H); // Add H to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->H); // Add H to A w Carry
             cpu->cycles += 4;
             break;
             
         case 0x8D:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->L); // Add L to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->L); // Add L to A w Carry
             cpu->cycles += 4;
             break;
             
         case 0x8E:
-            add_reg_reg_carry(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A w Carry
+            add_reg_carry(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A w Carry
             cpu->cycles += 8; 
             break;
             
         case 0x8F:
-            add_reg_reg_carry(cpu, &cpu->A, cpu->A); // Add A to A w Carry
+            add_reg_carry(cpu, &cpu->A, cpu->A); // Add A to A w Carry
             cpu->cycles += 4;
             break;
             
 
         // ==================== 0x90 - 0x9F ====================
 
-        case 0x90: 
+        case 0x90:
+            sub_reg(cpu, &cpu->A, cpu->B);  // Sub B from A
+            cpu->cycles += 4;
             break;
+
         case 0x91:
+            sub_reg(cpu, &cpu->A, cpu->C); // Sub C from A
+            cpu->cycles += 4;
             break;
+
         case 0x92:
+            sub_reg(cpu, &cpu->A, cpu->D); // Sub D from A
+            cpu->cycles += 4;
             break;
+
         case 0x93:
+            sub_reg(cpu, &cpu->A, cpu->E); // Sub E from A 
+            cpu->cycles += 4;
             break;
+
         case 0x94:
+            sub_reg(cpu, &cpu->A, cpu->H); // Sub H from A
+            cpu->cycles += 4;
             break;
+
         case 0x95:
+            sub_reg(cpu, &cpu->A, cpu->L); // Sub L from A
+            cpu->cycles += 4;
             break;
+
         case 0x96:
+            sub_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // Sub HL from A
+            cpu->cycles += 8;
             break;
+
         case 0x97:
+            sub_reg(cpu, &cpu->A, cpu->A); // Sub A from A
+            cpu->cycles += 4;
             break;
+
         case 0x98:
+            sub_reg_carry(cpu, &cpu->A, cpu->B); // Sub B from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x99:
+            sub_reg_carry(cpu, &cpu->A, cpu->C); // Sub C from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x9A:
+            sub_reg_carry(cpu, &cpu->A, cpu->D); // Sub D from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x9B:
+            sub_reg_carry(cpu, &cpu->A, cpu->E); // Sub E from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x9C:
+            sub_reg_carry(cpu, &cpu->A, cpu->H); // Sub H from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x9D:
+            sub_reg_carry(cpu, &cpu->A, cpu->L); // Sub L from A w Carry
+            cpu->cycles += 4;
             break;
+
         case 0x9E:
+            sub_reg_carry(cpu, &cpu->A, memory_read(get_hl(cpu))); // Sub HL from A w Carry
+            cpu->cycles += 8;
             break;
+
         case 0x9F:
+            sub_reg_carry(cpu, &cpu->A, cpu->A); // Sub A from A w Carry
+            cpu->cycles += 4;
             break;
 
         // ==================== 0xA0 - 0xAF ====================
 
         case 0xA0: 
+            and_reg(cpu, &cpu->A, cpu->B); // A . B
+            cpu->cycles += 4 ;
             break;
+
         case 0xA1:
+            and_reg(cpu, &cpu->A, cpu->C); // A . C
+            cpu->cycles += 4 ;
             break;
+
         case 0xA2:
+            and_reg(cpu, &cpu->A, cpu->D); // A . D
+            cpu->cycles += 4 ;
             break;
+
         case 0xA3:
+            and_reg(cpu, &cpu->A, cpu->E); // A . E
+            cpu->cycles += 4 ;
             break;
+
         case 0xA4:
+            and_reg(cpu, &cpu->A, cpu->H); // A . H
+            cpu->cycles += 4 ;
             break;
+
         case 0xA5:
+            and_reg(cpu, &cpu->A, cpu->L); // A . L
+            cpu->cycles += 4 ;
             break;
+
         case 0xA6:
+            and_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // A . HL
+            cpu->cycles += 8 ;
             break;
+
         case 0xA7:
+            and_reg(cpu, &cpu->A, cpu->A); // A . A
+            cpu->cycles += 4 ;
             break;
+
         case 0xA8:
+            xor_reg(cpu, &cpu->A, cpu->B); // A XOR B
+            cpu->cycles += 4 ;
             break;
+
         case 0xA9:
+            xor_reg(cpu, &cpu->A, cpu->C); // A XOR C
+            cpu->cycles += 4 ;
             break;
+
         case 0xAA:
+            xor_reg(cpu, &cpu->A, cpu->D); // A XOR D
+            cpu->cycles += 4 ;
             break;
+
         case 0xAB:
+            xor_reg(cpu, &cpu->A, cpu->E); // A XOR E
+            cpu->cycles += 4 ;
             break;
+
         case 0xAC:
+            xor_reg(cpu, &cpu->A, cpu->H); // A XOR H
+            cpu->cycles += 4 ;
             break;
+
         case 0xAD:
+            xor_reg(cpu, &cpu->A, cpu->L); // A XOR L
+            cpu->cycles += 4 ;
             break;
+
         case 0xAE:
+            xor_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // A XOR HL
+            cpu->cycles += 8 ;
             break;
+
         case 0xAF:
+            xor_reg(cpu, &cpu->A, cpu->A); // A XOR A
+            cpu->cycles += 4 ;
             break;
+
 
         // ==================== 0xB0 - 0xBF ====================
 
-        case 0xB0: 
+        case 0xB0:
+            or_reg(cpu, &cpu->A, cpu->B); // A OR B
+            cpu->cycles += 4;
             break;
+
         case 0xB1:
+            or_reg(cpu, &cpu->A, cpu->C); // A OR C
+            cpu->cycles += 4;
             break;
+
         case 0xB2:
+            or_reg(cpu, &cpu->A, cpu->D); // A OR D
+            cpu->cycles += 4;
             break;
+
         case 0xB3:
+            or_reg(cpu, &cpu->A, cpu->E); // A OR E
+            cpu->cycles += 4;
             break;
+
         case 0xB4:
+            or_reg(cpu, &cpu->A, cpu->H); // A OR H
+            cpu->cycles += 4;
             break;
+
         case 0xB5:
+            or_reg(cpu, &cpu->A, cpu->L); // A OR L
+            cpu->cycles += 4;
             break;
+
         case 0xB6:
+            or_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // A OR HL
+            cpu->cycles += 8;
             break;
+
         case 0xB7:
+            or_reg(cpu, &cpu->A, cpu->A); // A OR A
+            cpu->cycles += 4;
             break;
+
         case 0xB8:
+            cp_reg(cpu, &cpu->A, cpu->B); // COPY B to A
+            cpu->cycles += 4;
             break;
+
         case 0xB9:
+            cp_reg(cpu, &cpu->A, cpu->C); // COPY C to A
+            cpu->cycles += 4;
             break;
+
         case 0xBA:
+            cp_reg(cpu, &cpu->A, cpu->D); // COPY D to A
+            cpu->cycles += 4;
             break;
+
         case 0xBB:
+            cp_reg(cpu, &cpu->A, cpu->E); // COPY E to A
+            cpu->cycles += 4;
             break;
+
         case 0xBC:
+            cp_reg(cpu, &cpu->A, cpu->H); // COPY H to A
+            cpu->cycles += 4;
             break;
+
         case 0xBD:
+            cp_reg(cpu, &cpu->A, cpu->L); // COPY L to A
+            cpu->cycles += 4;
             break;
+
         case 0xBE:
+            cp_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // COPY HL to A
+            cpu->cycles += 8;
             break;
+
         case 0xBF:
+            cp_reg(cpu, &cpu->A, cpu->A); // COPY A to A
+            cpu->cycles += 4;
             break;
+
 
         // ==================== 0xC0 - 0xCF ====================
 
@@ -983,7 +1126,7 @@ void lda_hl_reg_dec(CPU* cpu){ // 0x3A
     set_hl(cpu, address-1);
 }
 
-void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src) {
+void add_reg(CPU* cpu, u8* dest_reg, u8 src) {
     u16 result = *dest_reg + src;
     
     set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
@@ -994,7 +1137,7 @@ void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src) {
     *dest_reg = result & 0xFF;
 }
 
-void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src){
+void add_reg_carry(CPU* cpu, u8* dest_reg, u8 src){
     u8 carry = get_flag(cpu, FLAG_C) ? 1 : 0; // Set carry to 1 if true, 0 if false
     u16 result = *dest_reg + src + carry;
 
@@ -1019,7 +1162,7 @@ void sub_reg(CPU* cpu, u8* dest_reg, u8 src){
 
 }
 
-void sbc_reg_carry(CPU* cpu, u8* dest_reg, u8 src) {
+void sub_reg_carry(CPU* cpu, u8* dest_reg, u8 src) {
     u8 carry = get_flag(cpu, FLAG_C) ? 1 : 0; // Check if there is a carry
     u8 val = *dest_reg;
     
