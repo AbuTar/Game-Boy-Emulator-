@@ -49,11 +49,14 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x01:
+            ld_pair_imm(cpu, set_bc);
+            cpu->cycles += 12;
+            break;
+            
+        case 0x02:
             ld_reg_pair(cpu, get_bc(cpu), cpu-> A ); // A to HL
             cpu->cycles += 8;
             break;
-
-        case 0x02:
 
             break;
         case 0x03:
@@ -88,7 +91,10 @@ void cpu_execute(CPU* cpu, u8 opcode){
         case 0x10: 
             break;
         case 0x11:
+            ld_pair_imm(cpu, set_de);
+            cpu->cycles += 12;
             break;
+
         case 0x12:
             break;
         case 0x13:
@@ -121,8 +127,12 @@ void cpu_execute(CPU* cpu, u8 opcode){
 
         case 0x20: 
             break;
+            
         case 0x21:
+            ld_pair_imm(cpu, set_hl);
+            cpu->cycles += 12;
             break;
+
         case 0x22:
             lda_reg_hl_inc(cpu);
             cpu->cycles += 8;
@@ -159,11 +169,14 @@ void cpu_execute(CPU* cpu, u8 opcode){
         case 0x30: 
             break;
         case 0x31:
-            break;
+            ld_pair_imm(cpu, set_sp);
+            cpu->cycles += 12;
+
         case 0x32:
             lda_reg_hl_dec(cpu);
             cpu->cycles += 8;
             break;
+
         case 0x33:
             break;
         case 0x34:
@@ -182,6 +195,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             lda_reg_hl_dec(cpu);
             cpu->cycles += 8;
             break;
+
         case 0x3B:
             break;
         case 0x3C:
@@ -307,7 +321,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x56:
-            ld_reg_reg(cpu, &cpu->D, get_hl(cpu)); // HL to D
+            ld_pair_reg(cpu, &cpu->D, get_hl(cpu)); // HL to D
             cpu->cycles += 8;
             break;
 
@@ -347,7 +361,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x5E:
-            ld_reg_reg(cpu, &cpu->E, get_hl(cpu)); // HL to E
+            ld_pair_reg(cpu, &cpu->E, get_hl(cpu)); // HL to E
             cpu->cycles += 8;
             break;
         
@@ -390,7 +404,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x66:
-            ld_reg_reg(cpu, &cpu->H, get_hl(cpu)); // HL to H
+            ld_pair_reg(cpu, &cpu->H, get_hl(cpu)); // HL to H
             cpu->cycles += 8;
             break;
 
@@ -430,7 +444,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x6E:
-            ld_reg_reg(cpu, &cpu->L, get_hl(cpu)); // HL to L
+            ld_pair_reg(cpu, &cpu->L, get_hl(cpu)); // HL to L
             cpu->cycles += 8;
             break;
         
@@ -480,7 +494,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
 
         case 0x77:
             ld_reg_pair(cpu, get_hl(cpu), cpu->A); // A to HL
-            cpu->cycles += 4;
+            cpu->cycles += 8;
             break;
 
         case 0x78:
@@ -514,7 +528,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x7E:
-            ld_reg_reg(cpu, &cpu->A, get_hl(cpu)); // HL to A
+            ld_pair_reg(cpu, &cpu->A, get_hl(cpu)); // HL to A
             cpu->cycles += 8;
             break;
         
@@ -526,37 +540,85 @@ void cpu_execute(CPU* cpu, u8 opcode){
         // ==================== 0x80 - 0x8F ====================
 
         case 0x80: 
+            add_reg_reg(cpu, &cpu->A, cpu->B); // Add B to A
+            cpu->cycles += 4; 
             break;
+
         case 0x81:
+            add_reg_reg(cpu, &cpu->A, cpu->C); // Add C to A
+            cpu->cycles += 4; 
             break;
+
         case 0x82:
+            add_reg_reg(cpu, &cpu->A, cpu->D); // Add D to A
+            cpu->cycles += 4; 
             break;
+            
         case 0x83:
+            add_reg_reg(cpu, &cpu->A, cpu->E); // Add E to A
+            cpu->cycles += 4; 
             break;
+            
         case 0x84:
+            add_reg_reg(cpu, &cpu->A, cpu->H); // Add H to A
+            cpu->cycles += 4; 
             break;
+            
         case 0x85:
+            add_reg_reg(cpu, &cpu->A, cpu->L); // Add L to A
+            cpu->cycles += 4; 
             break;
+            
         case 0x86:
+            add_reg_reg(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A
+            cpu->cycles += 8; 
             break;
+            
         case 0x87:
+            add_reg_reg(cpu, &cpu->A, cpu->A); // Add A to A  
+            cpu->cycles += 4; 
             break;
+            
         case 0x88:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->B); // Add B to A w Carry
+            cpu->cycles += 4; 
             break;
+            
         case 0x89:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->C); // Add C to A w Carry
+            cpu->cycles += 4; 
             break;
+            
         case 0x8A:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->D); // Add D to A w Carry
+            cpu->cycles += 4; 
             break;
+            
         case 0x8B:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->E); // Add E to A w Carry
+            cpu->cycles += 4; 
             break;
+            
         case 0x8C:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->H); // Add H to A w Carry
+            cpu->cycles += 4;
             break;
+            
         case 0x8D:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->L); // Add L to A w Carry
+            cpu->cycles += 4;
             break;
+            
         case 0x8E:
+            add_reg_reg_carry(cpu, &cpu->A, memory_read(get_hl(cpu))); // Add HL to A w Carry
+            cpu->cycles += 8; 
             break;
+            
         case 0x8F:
+            add_reg_reg_carry(cpu, &cpu->A, cpu->A); // Add A to A w Carry
+            cpu->cycles += 4;
             break;
+            
 
         // ==================== 0x90 - 0x9F ====================
 
@@ -882,6 +944,12 @@ void ld_reg_imm(CPU* cpu, u8* dest_reg){
     *dest_reg = memory_read(cpu->pc++);
 }
 
+void ld_pair_imm(CPU* cpu, void(*setter)(CPU*, u16)){
+    u8 lowerByte = memory_read(cpu->pc++);
+    u8 upperByte = memory_read(cpu->pc++);
+    setter(cpu, (upperByte<<8) | lowerByte);
+}
+
 void inc_reg(CPU* cpu, u8* reg){
     (*reg)++;
 }
@@ -903,40 +971,107 @@ void lda_reg_hl_dec(CPU* cpu){ // 0x32
 }
 
 void lda_hl_reg_inc(CPU* cpu){ // 0x2A
-    u16 address = memory_read(get_hl(cpu));
-    cpu->A = address;
+    u16 address = get_hl(cpu);
+    cpu->A = memory_read(address);
     set_hl(cpu, address+1);
 
 }
 
 void lda_hl_reg_dec(CPU* cpu){ // 0x3A
-    u16 address = memory_read(get_hl(cpu));
-    cpu->A = address;
+    u16 address = get_hl(cpu);
+    cpu->A = memory_read(address);
     set_hl(cpu, address-1);
 }
 
-void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg) {
-    u16 result = *dest_reg + src_reg;
+void add_reg_reg(CPU* cpu, u8* dest_reg, u8 src) {
+    u16 result = *dest_reg + src;
     
     set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
     set_flag(cpu, FLAG_N, false);
-    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src_reg & 0xF)) > 0xF);
+    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src & 0xF)) > 0xF);
     set_flag(cpu, FLAG_C, result > 0xFF);
     
     *dest_reg = result & 0xFF;
 }
 
-void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src_reg){
+void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src){
     u8 carry = get_flag(cpu, FLAG_C) ? 1 : 0; // Set carry to 1 if true, 0 if false
-    u16 result = *dest_reg + src_reg + carry;
+    u16 result = *dest_reg + src + carry;
 
     set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
     set_flag(cpu, FLAG_N, false);
-    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src_reg & 0xF) + carry) > 0xF);
+    set_flag(cpu, FLAG_H, ((*dest_reg & 0xF) + (src & 0xF) + carry) > 0xF);
     set_flag(cpu, FLAG_C, result > 0xFF);
 
     *dest_reg = (u8)(result & 0xFF);
 
+}
+
+void sub_reg(CPU* cpu, u8* dest_reg, u8 src){
+    u8 val = *dest_reg;
+    u16 result = val - src;
+    set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
+    set_flag(cpu, FLAG_N, true);
+    set_flag(cpu, FLAG_H, (val & 0xF) < (src & 0xF)); // If lower nibble of src > dest_reg, it must have carried
+    set_flag(cpu, FLAG_C, (val < src));
+
+    *dest_reg = (u8)(result & 0xFF);
+
+}
+
+void sbc_reg_carry(CPU* cpu, u8* dest_reg, u8 src) {
+    u8 carry = get_flag(cpu, FLAG_C) ? 1 : 0; // Check if there is a carry
+    u8 val = *dest_reg;
+    
+    int result = val - src - carry;
+    set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
+    set_flag(cpu, FLAG_N, true);
+    set_flag(cpu, FLAG_H, ((val & 0xF) - (src & 0xF) - carry) < 0);
+    set_flag(cpu, FLAG_C, result < 0);
+
+    *dest_reg = (u8)(result & 0xFF);
+}
+
+void and_reg(CPU* cpu, u8* dest_reg, u8 src){
+    *dest_reg &= src;
+
+    set_flag(cpu, FLAG_Z,*dest_reg == 0);
+    set_flag(cpu, FLAG_N, false);
+    set_flag(cpu, FLAG_H, true);
+    set_flag(cpu, FLAG_C, false);
+
+}
+
+void xor_reg(CPU* cpu, u8* dest_reg, u8 src){
+    *dest_reg ^= src;
+
+    set_flag(cpu, FLAG_Z, *dest_reg == 0);
+    set_flag(cpu, FLAG_N, false);
+    set_flag(cpu, FLAG_H, false);
+    set_flag(cpu, FLAG_C, false);
+}
+
+void or_reg(CPU* cpu, u8* dest_reg, u8 src){
+    *dest_reg |= src;
+
+    set_flag(cpu, FLAG_Z, *dest_reg == 0);
+    set_flag(cpu, FLAG_N, false);
+    set_flag(cpu, FLAG_H, false);
+    set_flag(cpu, FLAG_C, false);
+}
+
+void cp_reg(CPU* cpu, u8* dest_reg, u8 src){
+    u8 val = *dest_reg;
+    
+    u16 result = val - src;
+
+    set_flag(cpu, FLAG_Z, (result & 0xFF) == 0);
+    set_flag(cpu, FLAG_N, true);
+    set_flag(cpu, FLAG_H, (val & 0xF) < (src & 0xF));
+    set_flag(cpu, FLAG_C, val < src);
+
+    // Contents of the acc don't get updated
+    // Don't update dest_reg
 }
 
 // void ld_imm_pair(CPU* cpu, u16 addr){
@@ -945,10 +1080,6 @@ void add_reg_reg_carry(CPU* cpu, u8* dest_reg, u8 src_reg){
 //     u16 result = ((u16)) 
 
 // }
-
-
-
-
 
 // Flag Helper Functions (Setter and Getter)
 void set_flag(CPU* cpu, u8 flag, bool set_flag){
@@ -1003,6 +1134,10 @@ void set_de(CPU* cpu, u16 val){
 void set_hl(CPU* cpu, u16 val) {
     cpu->H = (val >> 8) & 0xFF;
     cpu->L = val & 0xFF;
+}
+
+void set_sp(CPU* cpu, u16 val){
+    cpu->sp = val;
 }
 
 
