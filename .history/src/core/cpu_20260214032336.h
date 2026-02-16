@@ -5,10 +5,6 @@
 #include "types.h"
 #include <stdbool.h>
 
-// LOG 
-#define UNIMPLEMENTED_OPCODES(opcode,pc) \
-    printf("UNIMPLEMENTED OPCODE: 0x%02X at PC: 0x%04X\n", opcode, pc);
-
 // CPU Flags
 #define FLAG_Z 0x80 // 1000 0000
 #define FLAG_N 0x40 // 0100 0000
@@ -66,13 +62,13 @@ bool get_flag(CPU* cpu, u8 flag);
 
 // Function Declarations
 
-void ld_reg_mem(CPU* cpu, u8* dest, u16 addr);
+void ld_reg_mem(CPU cpu, u8* dest, u16 addr);
 void ld_reg_reg(CPU* cpu, u8* dest_reg, u8 src_reg);
 void ld_pair_reg(CPU* cpu, u8* dest_reg, u16 addr);
 void ld_reg_pair(CPU* cpu, u16 addr, u8 src_reg);
 void ld_reg_imm(CPU* cpu, u8* dest_reg);
 void ld_imm_pair(CPU* cpu, u16 addr);
-void ld_pair_imm(CPU* cpu, void (*setter)(CPU*, u16));
+void inc_reg(CPU* cpu, u8* reg);
 void lda_reg_hl_inc(CPU* cpu);
 void lda_reg_hl_dec(CPU* cpu);
 void lda_hl_reg_inc(CPU* cpu);
@@ -102,14 +98,6 @@ void complement_acc(CPU* cpu);
 void set_carry_cy(CPU* cpu);
 void flip_cy(CPU* cpu);
 void ld_a16_sp(CPU* cpu);
-void push(CPU* cpu, u16 val);
-u16 pop(CPU* cpu);
-void call(CPU* cpu);
-void ret(CPU* cpu);
-void jp(CPU* cpu);
-void rst(CPU* cpu, u8 addr);
-
-
 
 
 #endif
