@@ -663,7 +663,7 @@ void cpu_interrupt_handler(CPU* cpu){
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x02)){ // LCD bit 1
+    if (interrupt_triggered & (0x02)){ // LCD bit 1
         cpu->ime = false;
         memory_write(0xFF0F, interrupt_flag & ~(0x02)); // Clear IF
         push(cpu, cpu->pc);
@@ -671,7 +671,7 @@ void cpu_interrupt_handler(CPU* cpu){
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x04)){ // Timer bit 2
+    if (interrupt_triggered & (0x04)){ // Timer bit 2
         cpu->ime = false;
         memory_write(0xFF0F, interrupt_flag & ~(0x04)); // Clear IF
         push(cpu, cpu->pc);
@@ -679,7 +679,7 @@ void cpu_interrupt_handler(CPU* cpu){
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x08)){ // Serial bit 3
+    if (interrupt_triggered & (0x08)){ // Serial bit 3
         cpu->ime = false;
         memory_write(0xFF0F, interrupt_flag & ~(0x08)); // Clear IF
         push(cpu, cpu->pc);
@@ -687,7 +687,7 @@ void cpu_interrupt_handler(CPU* cpu){
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x10)){ // Joypad bit 4
+    if (interrupt_triggered & (0x10)){ // Joypad bit 4
         cpu->ime = false;
         memory_write(0xFF0F, interrupt_flag & ~(0x10)); // Clear IF
         push(cpu, cpu->pc);

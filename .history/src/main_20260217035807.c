@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){ // Usage : emulator.exe test.gb - takes 2 argu
     CPU cpu;
     memory_init();
     cpu_init(&cpu);
-
+    
     if (argc < 2){ 
         printf("Usage: emulator.exe <rom.gb>\n");
         return 1;

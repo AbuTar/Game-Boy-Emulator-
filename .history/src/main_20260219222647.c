@@ -73,6 +73,16 @@ int main(int argc, char* argv[]){ // Usage : emulator.exe test.gb - takes 2 argu
         }
     }
 
+    // Serial Check 
+    for (int i = 0; i < 100; i++) {  // Check a few more times
+        u8 output = memory_read(0xFF01);
+        if (output != 0) {
+            printf("%c", output);
+            fflush(stdout);
+            memory_write(0xFF01, 0);
+        }
+    }
+
     printf("\n\n=== Execution Complete ===\n");
     printf("Total cycles: %llu\n", cpu.cycles);
     printf("Halted: %s\n", cpu.isHalted ? "Yes" : "No (timeout)");

@@ -32,11 +32,7 @@ typedef struct {
 
     bool isHalted; // HALT instruction
     bool awake; // Flag used to exit HALT
-    bool ime; // Interrupt Mastee Enable
-    bool ei; // Interrupts after next instruction
-    u16 div; // Divider Register
-    u16 timer_counter; // TIMA
-
+    bool ime; // Interrupt Enabled
 
     u64 cycles; // Total clock cycles executed
 
@@ -62,9 +58,6 @@ void cpu_init(CPU* cpu); // Initialises CPU
 void cpu_step(CPU* cpu); // Increments PC
 void cpu_execute(CPU* cpu, u8 opcode); // Executes instruction based on Opcode input
 void cpu_execute_cb(CPU* cpu, u8 opcode); // Executes special instructions 
-void cpu_interrupt_handler(CPU* cpu); // Handles Interrupts
-void cpu_update_timer(CPU* cpu, u8 cycles);
-
 
 // Flag Getters / Setters
 

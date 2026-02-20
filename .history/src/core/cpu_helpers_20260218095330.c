@@ -585,117 +585,14 @@ void set_bit_hl(CPU* cpu, u8 bit) {
     memory_write(addr, val);
 }
 
-// Timer Handler:
-
-void cpu_update_timer(CPU* cpu, u8 cycles){
-
-    cpu->div += cycles;
-    if (cpu->div >= 256) { // If > 256 cycles elapse, DIV reg increments
-        cpu->div -= 256; // Accounting for overflow
-        u8 div = memory_read(0xFF04);
-        memory_write(0xFF04, div + 1);
-    }
-
-    // Need to update frequency based on whether the timer is enabled
-
-    u8 timer_control_tac = memory_read(0xFF07);
-    if (timer_control_tac & 0x04){
-        cpu->timer_counter += cycles;
-
-        u16 threshold_frequency;
-        switch (timer_control_tac & 0x03){
-            case 0:
-                threshold_frequency = 1024; // 4096 Hz
-                break;
-            
-            case 1:
-                threshold_frequency = 16; // 262144 Hz
-                break;
-
-            case 2:
-                threshold_frequency = 64; // 65536 Hz
-                break;
-
-            case 3:
-                threshold_frequency = 256; // 16384 Hz
-                break;
-        }
-
-        // After executing long instructions, TIMA may need multiple increments
-        while(cpu->timer_counter >= threshold_frequency){
-            cpu->timer_counter -= threshold_frequency;
-
-            u8 tima_val = memory_read(0xFF05);
-
-            if (tima_val == 0xFF){
-                 // Overflow: Reset TMA and Interrupt Request
-                u8 timer_modulo_tma = memory_read(0xFF06);
-                memory_write(0xFF05, timer_modulo_tma);
-                
-                u8 if_flag = memory_read(0xFF0F);
-                memory_write(0xFF0F, if_flag | 0x04);
-            }
-
-            else{
-                memory_write(0xFF05, tima_val + 1); // Increment
-            }
-        }
-    }
-
-    
-}
-
 // Interrupts handler:
 
 void cpu_interrupt_handler(CPU* cpu){
     u8 ie = memory_read(0xFFFF); //interrupt enable
     u8 interrupt_flag = memory_read(0xFF0F); // interrupt flag
 
-    u8 interrupt_triggered = (ie & interrupt_flag);
-
-    // Interrupt Priority is highest at Bit 0, Lowest at Bit 4
-
-    if (interrupt_triggered & (0x01)){ // VBlank bit 0
-        cpu->ime = false;
-        memory_write(0xFF0F, interrupt_flag & ~(0x01)); // Clear IF
-        push(cpu, cpu->pc);
-        cpu->pc = 0x0040; // Jump to Vblank Handler
-        cpu->cycles += 20;
-    } 
-
-    else if (interrupt_triggered & (0x02)){ // LCD bit 1
-        cpu->ime = false;
-        memory_write(0xFF0F, interrupt_flag & ~(0x02)); // Clear IF
-        push(cpu, cpu->pc);
-        cpu->pc = 0x0048; // JUMP to LCD Handler
-        cpu->cycles += 20;
-    } 
-
-    else if (interrupt_triggered & (0x04)){ // Timer bit 2
-        cpu->ime = false;
-        memory_write(0xFF0F, interrupt_flag & ~(0x04)); // Clear IF
-        push(cpu, cpu->pc);
-        cpu->pc = 0x0050; // JUMP to TIMER Handler
-        cpu->cycles += 20;
-    } 
-
-    else if (interrupt_triggered & (0x08)){ // Serial bit 3
-        cpu->ime = false;
-        memory_write(0xFF0F, interrupt_flag & ~(0x08)); // Clear IF
-        push(cpu, cpu->pc);
-        cpu->pc = 0x0058; // JUMP to Serial Handler
-        cpu->cycles += 20;
-    } 
-
-    else if (interrupt_triggered & (0x10)){ // Joypad bit 4
-        cpu->ime = false;
-        memory_write(0xFF0F, interrupt_flag & ~(0x10)); // Clear IF
-        push(cpu, cpu->pc);
-        cpu->pc = 0x0060; // JUMP to Joypad Handler
-        cpu->cycles += 20;
-    } 
-
+    u8 interrupt_triggered = ie & interrupt_flag;
      
-
+    
 
 }

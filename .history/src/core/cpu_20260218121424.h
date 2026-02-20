@@ -63,8 +63,6 @@ void cpu_step(CPU* cpu); // Increments PC
 void cpu_execute(CPU* cpu, u8 opcode); // Executes instruction based on Opcode input
 void cpu_execute_cb(CPU* cpu, u8 opcode); // Executes special instructions 
 void cpu_interrupt_handler(CPU* cpu); // Handles Interrupts
-void cpu_update_timer(CPU* cpu, u8 cycles);
-
 
 // Flag Getters / Setters
 

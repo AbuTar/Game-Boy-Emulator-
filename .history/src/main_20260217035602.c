@@ -51,6 +51,12 @@ int main(int argc, char* argv[]){ // Usage : emulator.exe test.gb - takes 2 argu
     memory_init();
     cpu_init(&cpu);
 
+    printf("argc = %d\n", argc);
+for (int i = 0; i < argc; i++) {
+    printf("argv[%d] = '%s'\n", i, argv[i]);
+}
+
+
     if (argc < 2){ 
         printf("Usage: emulator.exe <rom.gb>\n");
         return 1;

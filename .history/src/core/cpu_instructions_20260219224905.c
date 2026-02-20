@@ -1184,7 +1184,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
         case 0xD2: // JP NC, a16
             if (!get_flag(cpu, FLAG_C)){ 
                 jp(cpu);
-                cpu->cycles += 16;
+                cpu->cycles =+ 16;
             }
 
             else{

@@ -27,9 +27,6 @@ void cpu_init(CPU* cpu){
     cpu->ei = false;
     cpu->awake = false;
     cpu->cycles = 0;
-
-    cpu->timer_counter = 0;
-    cpu->div = 0;
 }
 
 void cpu_step(CPU* cpu){
@@ -48,14 +45,9 @@ void cpu_step(CPU* cpu){
     if (cpu->ime){
         cpu_interrupt_handler(cpu);
     }
-    
-    u8 prev_cycles = cpu->cycles;
 
     u8 opcode = memory_read(cpu->pc++);
     cpu_execute(cpu, opcode);
-
-    u8 executed_cycles = cpu->cycles - prev_cycles; // Calculate cycles of most recently executed instruction
-    cpu_update_timer(cpu, executed_cycles); // Update timer
 
 
 }

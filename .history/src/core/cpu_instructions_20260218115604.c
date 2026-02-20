@@ -338,7 +338,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
             break;
 
         case 0x3A:
-            lda_hl_reg_dec(cpu); // HL to A, decrement HL
+            lda_reg_hl_dec(cpu); // HL to A, decrement HL
             cpu->cycles += 8;
             break;
 
@@ -1184,7 +1184,7 @@ void cpu_execute(CPU* cpu, u8 opcode){
         case 0xD2: // JP NC, a16
             if (!get_flag(cpu, FLAG_C)){ 
                 jp(cpu);
-                cpu->cycles += 16;
+                cpu->cycles =+ 16;
             }
 
             else{

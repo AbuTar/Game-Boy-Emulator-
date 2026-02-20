@@ -9,7 +9,7 @@ bool load_rom(const char* path){ // Passing in path of file
 
     FILE* file = fopen(path, "rb");
     if (!file){
-        printf("Failed to open ROM: %s\n", path);
+        printf("Failed to open ROM: %sn", path);
         return false;
     }
 

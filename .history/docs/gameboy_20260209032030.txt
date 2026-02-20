@@ -23,8 +23,4 @@ E.g.    0001 & 1111 (0xF)
         Code example: set_flag(cpu, FLAG_H, ((cpu->A & 0xF) + (value & 0xF)) > 0xF);
          - essentially set_flag(cpu, FLAG_H, (val in A + val in B > 15))
 
-# Gameboy Timer
-
-The Gameboy has 4 timer-related memory addresses:
-0xFF04 - 
-0x
+        
