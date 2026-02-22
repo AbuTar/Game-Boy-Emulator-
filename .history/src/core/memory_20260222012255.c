@@ -61,18 +61,20 @@ u8 memory_read(u16 address){
 
     // ROM Bank (0x0000-0x7FFF)
     if (address <=  0x7FFF){
-        if (cart_rom == NULL)  return 0xFF; // ROM hasn't loaded or CPU read beyond ROM size
+        if (cart_rom != NULL)  return 0xFF; // ROM hasn't loaded or CPU read beyond ROM size
 
-        if (address <= 0x3FFF){
-            if (address < rom_size){ return cart_rom[address];}
+        if (address < 0x3FFF){
+            if (address < rom_size){ return cart_rom[address];
         }
 
         else {
-            size_t bank_offset = (rom_bank * 0x4000) + (address - 0x4000);
+            size_t bank_offset = (rom_bank * 0x4000 + (address = 0x4000));
 
             if (bank_offset < rom_size){
                 return cart_rom[bank_offset];
             }
+        }
+
         }
 
         return 0xFF;
@@ -80,7 +82,6 @@ u8 memory_read(u16 address){
 
     }
 
-    
     // VRAM Bank (0x8000-0x9FFF)
     else if (address >= 0x8000 && address <= 0x9FFF){
         return vram[address - 0x8000];
@@ -165,13 +166,13 @@ void memory_write(u16 address, u8 value){
             }
 
             else if (address <= 0x5FFF){
-                if (bank_mode == 1){
+                if (bank_mode = 1){
                     ram_bank = 0x03 & value;
                 }
-            }
 
             else if(address <= 0x7FFF){
                 bank_mode = value & 0x01;
+            }
             }
         }
 

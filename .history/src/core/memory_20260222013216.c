@@ -80,7 +80,6 @@ u8 memory_read(u16 address){
 
     }
 
-    
     // VRAM Bank (0x8000-0x9FFF)
     else if (address >= 0x8000 && address <= 0x9FFF){
         return vram[address - 0x8000];
