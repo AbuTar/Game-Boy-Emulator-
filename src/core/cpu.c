@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "cpu.h"
 #include "memory.h"
+#include "ppu.h"
 
 void cpu_init(CPU* cpu){
 
@@ -30,9 +31,14 @@ void cpu_init(CPU* cpu){
 
     cpu->timer_counter = 0;
     cpu->div = 0;
+
+    // // Pixel Processing Unit
+
+    // PPU ppu;
+    // ppu_init(&ppu);
 }
 
-void cpu_step(CPU* cpu){
+void cpu_step(CPU* cpu, PPU* ppu){
 
     if (cpu->isHalted){
         cpu->cycles += 4;
@@ -56,6 +62,9 @@ void cpu_step(CPU* cpu){
 
     u8 executed_cycles = cpu->cycles - prev_cycles; // Calculate cycles of most recently executed instruction
     cpu_update_timer(cpu, executed_cycles); // Update timer
+
+    // Update Graphics
+    ppu_step(ppu, executed_cycles);
 
 
 }

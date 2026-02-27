@@ -55,6 +55,10 @@ void memory_init(void){
     memset(hram, 0, sizeof(hram));
     io[0x0F] = 0x00; // IF and IE registers
     ie = 0x00;
+    io[0x40] = 0x91;  // LCDC - LCD enabled, BG enabled
+    io[0x47] = 0xFC;  // BGP - Palette (11 11 10 00)
+    io[0x48] = 0xFF;  // OBP0
+    io[0x49] = 0xFF;  // OBP1
 }
 
 u8 memory_read(u16 address){
@@ -301,4 +305,9 @@ void clear_memory(void){
         cart_rom = NULL;
         rom_size = 0;
     }
+}
+
+void request_interrupt(u8 interrupt_bit){
+    u8 if_flag = memory_read(0xFF0F);
+    memory_write(0xFF0F, if_flag | interrupt_bit);
 }

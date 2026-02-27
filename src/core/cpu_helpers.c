@@ -1,5 +1,6 @@
 #include "cpu.h"
 #include "memory.h"
+#include <stdint.h>
 
 // -------------------- 8-bit Opcode Instruction Helper Functions --------------------
 

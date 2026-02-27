@@ -26,5 +26,33 @@ E.g.    0001 & 1111 (0xF)
 # Gameboy Timer
 
 The Gameboy has 4 timer-related memory addresses:
-0xFF04 - 
-0x
+0xFF04 - DIV  (Divider Register)
+0xFF05 - TIMA (Timer Counter)
+0xFF06 - TMA  (Timer Modulo)
+0xFF07 - TAC  (Timer Control)
+
+And the CPU runs at a a clock rate of 4,194,304 Hz
+
+DIV - is not it's own register, rather the upper 8 bits of the Internal Divider
+As a result, DIV increments every 256 cycles
+- Writing any value to DIV resets the internal divider to 0
+
+TIMA - Programmable timer Counter
+- Watches specific bits of the internal dividers and increments whenever it resets
+
+TAC Register
+
+TAC bits: 0 0 0 0 0 T E S S
+│ │
+│ └─ Clock Select Bit 0
+└─── Clock Select Bit 1
+
+Bit 2 = Timer Enable
+
+Clock select bits (0–1) choose which divider bit TIMA watches:
+TAC bits   Divider bit watched   Frequency
+
+00         bit 9                 4096 Hz
+01         bit 3                 262144 Hz
+10         bit 5                 65536 Hz
+11         bit 7                 16384 Hz
