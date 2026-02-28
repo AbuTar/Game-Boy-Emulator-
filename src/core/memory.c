@@ -59,6 +59,7 @@ void memory_init(void){
     io[0x47] = 0xFC;  // BGP - Palette (11 11 10 00)
     io[0x48] = 0xFF;  // OBP0
     io[0x49] = 0xFF;  // OBP1
+    io[0x00] = 0xFF;
 }
 
 u8 memory_read(u16 address){
@@ -131,6 +132,9 @@ u8 memory_read(u16 address){
     
     // I/O (0xFF00-0xFF7F)
     else if (address >= 0xFF00 && address <= 0xFF7F){
+        if (address == 0xFF00){
+            return 0xFF;
+        }
         return io[address - 0xFF00];
         
     }
@@ -242,6 +246,12 @@ void memory_write(u16 address, u8 value){
     
     // I/O (0xFF00-0xFF7F)
     else if (address >= 0xFF00 && address <= 0xFF7F){
+
+        if (address == 0xFF00) {
+        // Only bits 4-5 are writable (selection). Low bits come from buttons.
+        io[0x00] = (io[0x00] & 0xCF) | (value & 0x30);
+        return;
+    }
 
         if (address == 0xFF04){
             io[0x04] = 0;

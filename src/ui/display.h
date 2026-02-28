@@ -3,6 +3,8 @@
 #include <SDL3/SDL.h>
 #include "ppu.h"
 
+
+
 typedef struct{
     SDL_Window* window;
     SDL_Renderer* renderer;

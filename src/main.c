@@ -5,7 +5,7 @@
 #include "memory.h"
 #include "ppu.h"
 #include "ppu.h"
-#include "ui/display.h"
+#include "display.h"
 
 
 bool load_rom(const char* path){ // Passing in path of file
@@ -50,7 +50,7 @@ bool load_rom(const char* path){ // Passing in path of file
 int main(int argc, char* argv[]){
     CPU cpu;
     PPU ppu;
-    Display display;  // ✅ Add display
+    Display display;  // Add display
     
     memory_init();
     cpu_init(&cpu);
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    // ✅ Initialize SDL display
+    // Initialize SDL display
     if (!display_init(&display, 4)) {  // 4x scale = 640×576 window
         return 1;
     }
@@ -76,8 +76,8 @@ int main(int argc, char* argv[]){
     u64 frame_count = 0;
     bool running = true;
 
-    while (running && !cpu.isHalted && cpu.cycles < 1000000000){
-        // ✅ Handle input (returns false if user wants to quit)
+    while (running && cpu.cycles < 1000000000){
+        // Handle input (returns false if user wants to quit)
         running = display_handle_input(&display);
         
         // Execute CPU instruction
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]){
             memory_write(0xFF01, 0);        
         }
 
-        // ✅ Render frame when VBlank starts
+        // Render frame when VBlank starts
         u8 current_scanline = memory_read(0xFF44);
         if (current_scanline == 0 && previous_scanline >= 144){
             frame_count++;
@@ -114,7 +114,7 @@ int main(int argc, char* argv[]){
     printf("Halted: %s\n", cpu.isHalted ? "Yes" : "No");
     printf("Final PC: 0x%04X\n", cpu.pc);
     
-    // ✅ Cleanup
+    // Cleanup
     display_cleanup(&display);
     clear_memory();
     return 0;

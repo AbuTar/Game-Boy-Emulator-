@@ -42,6 +42,8 @@ void cpu_step(CPU* cpu, PPU* ppu){
 
     if (cpu->isHalted){
         cpu->cycles += 4;
+        cpu_update_timer(cpu, 4);
+        ppu_step(ppu, 4);
         return;
     }
 
@@ -55,12 +57,14 @@ void cpu_step(CPU* cpu, PPU* ppu){
         cpu_interrupt_handler(cpu);
     }
     
-    u8 prev_cycles = cpu->cycles;
+    u64 prev_cycles = cpu->cycles;
 
     u8 opcode = memory_read(cpu->pc++);
     cpu_execute(cpu, opcode);
 
-    u8 executed_cycles = cpu->cycles - prev_cycles; // Calculate cycles of most recently executed instruction
+    u64 delta = cpu->cycles - prev_cycles;
+
+    u8 executed_cycles = (delta > 255) ? 255 : (u8)delta; // Calculate cycles of most recently executed instruction
     cpu_update_timer(cpu, executed_cycles); // Update timer
 
     // Update Graphics

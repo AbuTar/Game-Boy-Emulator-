@@ -1,5 +1,5 @@
-#include <SDL3/SDL.h>
 #include "display.h"
+#include <SDL3/SDL.h>
 #include <stdio.h>
 
 bool display_init(Display* display, int scale) {
@@ -33,7 +33,7 @@ bool display_init(Display* display, int scale) {
     
     display->texture = SDL_CreateTexture(
         display->renderer,
-        SDL_PIXELFORMAT_XRGB8888,  // ✅ Fixed
+        SDL_PIXELFORMAT_XRGB8888,
         SDL_TEXTUREACCESS_STREAMING,
         SCREEN_WIDTH,
         SCREEN_HEIGHT
@@ -66,7 +66,7 @@ void display_render(Display* display, PPU* ppu) {
     
     for (int y = 0; y < SCREEN_HEIGHT; y++) {
         for (int x = 0; x < SCREEN_WIDTH; x++) {
-            u8 color_index = ppu->frame_buffer[y][x] & 0x03;
+            u8 color_index = ppu->frame_buffer[y][x] & 0x03;  // Ensure 0-3
             pixels[y][x] = colors[color_index];
         }
     }
@@ -85,19 +85,21 @@ bool display_handle_input(Display* display) {
     
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
-            return false;
+            return false;  // User closed window
         }
         
         if (event.type == SDL_EVENT_KEY_DOWN) {
             switch (event.key.key) {
                 case SDLK_ESCAPE:
-                    return false;
+                    return false;  // ESC to quit
                     
-                case SDLK_RETURN:
+                case SDLK_RETURN:  // Enter = START
+                    // TODO: Set joypad START bit
                     printf("START pressed\n");
                     break;
                     
-                case SDLK_RSHIFT:
+                case SDLK_RSHIFT:  // Right Shift = SELECT
+                    // TODO: Set joypad SELECT bit
                     printf("SELECT pressed\n");
                     break;
                     
@@ -105,14 +107,15 @@ bool display_handle_input(Display* display) {
                 case SDLK_DOWN:
                 case SDLK_LEFT:
                 case SDLK_RIGHT:
-                case SDLK_Z:
-                case SDLK_X:
+                case SDLK_Z:  // A button
+                case SDLK_X:  // B button
+                    // TODO: Implement joypad input
                     break;
             }
         }
     }
     
-    return true;
+    return true;  // Keep running
 }
 
 void display_cleanup(Display* display) {
