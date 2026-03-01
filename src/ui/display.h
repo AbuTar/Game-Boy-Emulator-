@@ -2,6 +2,7 @@
 #define DISPLAY_H
 #include <SDL3/SDL.h>
 #include "ppu.h"
+#include "input.h"
 
 
 

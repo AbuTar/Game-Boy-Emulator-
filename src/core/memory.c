@@ -59,7 +59,7 @@ void memory_init(void){
     io[0x47] = 0xFC;  // BGP - Palette (11 11 10 00)
     io[0x48] = 0xFF;  // OBP0
     io[0x49] = 0xFF;  // OBP1
-    io[0x00] = 0xFF;
+    io[0x00] = 0xFF;  // Nothing pressed
 }
 
 u8 memory_read(u16 address){
@@ -132,9 +132,9 @@ u8 memory_read(u16 address){
     
     // I/O (0xFF00-0xFF7F)
     else if (address >= 0xFF00 && address <= 0xFF7F){
-        if (address == 0xFF00){
-            return 0xFF;
-        }
+        // if (address == 0xFF00){
+        //     return 0xFF;
+        // }
         return io[address - 0xFF00];
         
     }
@@ -320,4 +320,9 @@ void clear_memory(void){
 void request_interrupt(u8 interrupt_bit){
     u8 if_flag = memory_read(0xFF0F);
     memory_write(0xFF0F, if_flag | interrupt_bit);
+}
+
+void memory_set_joypad_low(u8 low4) {
+    // Keep upper bits (selection + unused), replace only low nibble
+    io[0x00] = (io[0x00] & 0xF0) | (low4 & 0x0F);
 }

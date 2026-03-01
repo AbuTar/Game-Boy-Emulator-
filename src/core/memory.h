@@ -9,6 +9,7 @@ void memory_write(u16 address, u8 value);
 void memory_load_rom(u8* data, size_t size);
 void clear_memory(void);
 void request_interrupt(uint8_t interrupt_flag);
+void memory_set_joypad_low(u8 low4);
 
 
 

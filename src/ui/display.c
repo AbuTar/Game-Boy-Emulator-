@@ -1,4 +1,5 @@
 #include "display.h"
+#include "input.h"
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
@@ -71,10 +72,8 @@ void display_render(Display* display, PPU* ppu) {
         }
     }
     
-    // Update texture with new frame
+    // Update texture with new frame then render to screen
     SDL_UpdateTexture(display->texture, NULL, pixels, SCREEN_WIDTH * sizeof(u32));
-    
-    // Render to screen
     SDL_RenderClear(display->renderer);
     SDL_RenderTexture(display->renderer, display->texture, NULL, NULL);
     SDL_RenderPresent(display->renderer);
@@ -85,37 +84,116 @@ bool display_handle_input(Display* display) {
     
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
-            return false;  // User closed window
+            return false;
         }
         
         if (event.type == SDL_EVENT_KEY_DOWN) {
             switch (event.key.key) {
+
+                // ESCAPE, START, SELECT
                 case SDLK_ESCAPE:
-                    return false;  // ESC to quit
+                    return false;
                     
-                case SDLK_RETURN:  // Enter = START
-                    // TODO: Set joypad START bit
+                case SDLK_RETURN:
+                    input_button_press(BUTTON_START);
+                    printf("START pressed\n");
+                    break;
+                
+                case SDLK_RSHIFT:
+                    input_button_press(BUTTON_SELECT);
+                    printf("SELECT pressed\n");
+                    break;
+
+
+                // D-PAD
+                case SDLK_LEFT:
+                    input_button_press(BUTTON_LEFT);
+                    printf("LEFT pressed");
+                    break;
+                
+                case SDLK_RIGHT:
+                    input_button_press(BUTTON_RIGHT);
+                    printf("RIGHT pressed");
+                    break;
+
+                case SDLK_UP:
+                    input_button_press(BUTTON_UP);
+                    printf("UP pressed");
+                    break;
+
+                case SDLK_DOWN:
+                    input_button_press(BUTTON_DOWN);
+                    printf("DOWN pressed");
+                    break;
+
+
+                // A, B BUTTONS
+                case SDLK_Z:
+                    input_button_press(BUTTON_A);
+                    printf("A pressed");
+                    break;
+
+                case SDLK_X:
+                    input_button_press(BUTTON_B);
+                    printf("B pressed");
+                    break;
+            }
+        }
+
+        if (event.type == SDL_EVENT_KEY_UP) {
+            switch (event.key.key) {
+                
+                // START, SELECT
+                case SDLK_RETURN:
+                    input_button_release(BUTTON_START);
                     printf("START pressed\n");
                     break;
                     
-                case SDLK_RSHIFT:  // Right Shift = SELECT
-                    // TODO: Set joypad SELECT bit
+                case SDLK_RSHIFT:
+                    input_button_release(BUTTON_SELECT);
                     printf("SELECT pressed\n");
                     break;
-                    
-                case SDLK_UP:
-                case SDLK_DOWN:
+
+
+                // D-PAD
                 case SDLK_LEFT:
+                    input_button_release(BUTTON_LEFT);
+                    printf("LEFT pressed");
+                    break;
+                
                 case SDLK_RIGHT:
-                case SDLK_Z:  // A button
-                case SDLK_X:  // B button
-                    // TODO: Implement joypad input
+                    input_button_release(BUTTON_RIGHT);
+                    printf("RIGHT pressed");
+                    break;
+
+                case SDLK_UP:
+                    input_button_release(BUTTON_UP);
+                    printf("UP pressed");
+                    break;
+
+                case SDLK_DOWN:
+                    input_button_release(BUTTON_DOWN);
+                    printf("DOWN pressed");
+                    break;
+
+
+                // A, B BUTTONS
+                case SDLK_Z:
+                    input_button_release(BUTTON_A);
+                    printf("A pressed");
+                    break;
+
+                case SDLK_X:
+                    input_button_release(BUTTON_B);
+                    printf("B pressed");
                     break;
             }
         }
     }
     
-    return true;  // Keep running
+    // Update the Joypad Register
+    input_update_state();
+    return true;
 }
 
 void display_cleanup(Display* display) {
