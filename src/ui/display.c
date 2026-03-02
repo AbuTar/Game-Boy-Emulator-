@@ -108,34 +108,34 @@ bool display_handle_input(Display* display) {
                 // D-PAD
                 case SDLK_LEFT:
                     input_button_press(BUTTON_LEFT);
-                    printf("LEFT pressed");
+                    printf("LEFT pressed\n");
                     break;
                 
                 case SDLK_RIGHT:
                     input_button_press(BUTTON_RIGHT);
-                    printf("RIGHT pressed");
+                    printf("RIGHT pressed\n");
                     break;
 
                 case SDLK_UP:
                     input_button_press(BUTTON_UP);
-                    printf("UP pressed");
+                    printf("UP pressed\n");
                     break;
 
                 case SDLK_DOWN:
                     input_button_press(BUTTON_DOWN);
-                    printf("DOWN pressed");
+                    printf("DOWN pressed\n");
                     break;
 
 
                 // A, B BUTTONS
                 case SDLK_Z:
                     input_button_press(BUTTON_A);
-                    printf("A pressed");
+                    printf("A pressed\n");
                     break;
 
                 case SDLK_X:
                     input_button_press(BUTTON_B);
-                    printf("B pressed");
+                    printf("B pressed\n");
                     break;
             }
         }
@@ -158,34 +158,34 @@ bool display_handle_input(Display* display) {
                 // D-PAD
                 case SDLK_LEFT:
                     input_button_release(BUTTON_LEFT);
-                    printf("LEFT pressed");
+                    printf("LEFT pressed\n");
                     break;
                 
                 case SDLK_RIGHT:
                     input_button_release(BUTTON_RIGHT);
-                    printf("RIGHT pressed");
+                    printf("RIGHT pressed\n");
                     break;
 
                 case SDLK_UP:
                     input_button_release(BUTTON_UP);
-                    printf("UP pressed");
+                    printf("UP pressed\n");
                     break;
 
                 case SDLK_DOWN:
                     input_button_release(BUTTON_DOWN);
-                    printf("DOWN pressed");
+                    printf("DOWN pressed\n");
                     break;
 
 
                 // A, B BUTTONS
                 case SDLK_Z:
                     input_button_release(BUTTON_A);
-                    printf("A pressed");
+                    printf("A pressed\n");
                     break;
 
                 case SDLK_X:
                     input_button_release(BUTTON_B);
-                    printf("B pressed");
+                    printf("B pressed\n");
                     break;
             }
         }

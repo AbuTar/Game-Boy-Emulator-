@@ -646,50 +646,65 @@ void cpu_update_timer(CPU* cpu, u8 cycles){
     
 }
 
+static inline void cpu_tick(CPU* cpu, PPU* ppu, u8 tcycles) {
+    cpu->cycles += tcycles;
+    cpu_update_timer(cpu, tcycles);
+    ppu_step(ppu, tcycles);
+}
+
 // Interrupts handler:
 
 void cpu_interrupt_handler(CPU* cpu){
     u8 ie = memory_read(0xFFFF); //interrupt enable
     u8 interrupt_flag = memory_read(0xFF0F); // interrupt flag
 
-    u8 interrupt_triggered = (ie & interrupt_flag);
+    u8 pending_interrupt = (ie & interrupt_flag);
+
+    if (pending_interrupt == 0){
+        return;
+    }
+
+    if (cpu->isHalted){
+        cpu->isHalted = false;
+    }
+
+    if (!cpu->ime){
+        return;
+    }
+
+    cpu->ime = false;
 
     // Interrupt Priority is highest at Bit 0, Lowest at Bit 4
 
-    if (interrupt_triggered & (0x01)){ // VBlank bit 0
-        cpu->ime = false;
+    if (pending_interrupt & (0x01)){ // VBlank bit 0
         memory_write(0xFF0F, interrupt_flag & ~(0x01)); // Clear IF
         push(cpu, cpu->pc);
         cpu->pc = 0x0040; // Jump to Vblank Handler
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x02)){ // LCD bit 1
-        cpu->ime = false;
+    else if (pending_interrupt & (0x02)){ // LCD bit 1
         memory_write(0xFF0F, interrupt_flag & ~(0x02)); // Clear IF
         push(cpu, cpu->pc);
         cpu->pc = 0x0048; // JUMP to LCD Handler
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x04)){ // Timer bit 2
-        cpu->ime = false;
+    else if (pending_interrupt & (0x04)){ // Timer bit 2
         memory_write(0xFF0F, interrupt_flag & ~(0x04)); // Clear IF
         push(cpu, cpu->pc);
         cpu->pc = 0x0050; // JUMP to TIMER Handler
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x08)){ // Serial bit 3
-        cpu->ime = false;
+    else if (pending_interrupt & (0x08)){ // Serial bit 3
         memory_write(0xFF0F, interrupt_flag & ~(0x08)); // Clear IF
         push(cpu, cpu->pc);
         cpu->pc = 0x0058; // JUMP to Serial Handler
         cpu->cycles += 20;
     } 
 
-    else if (interrupt_triggered & (0x10)){ // Joypad bit 4
-        cpu->ime = false;
+    else if (pending_interrupt & (0x10)){ // Joypad bit 4
         memory_write(0xFF0F, interrupt_flag & ~(0x10)); // Clear IF
         push(cpu, cpu->pc);
         cpu->pc = 0x0060; // JUMP to Joypad Handler

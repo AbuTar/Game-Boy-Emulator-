@@ -99,13 +99,11 @@ int main(int argc, char* argv[]){
         if (current_scanline == 0 && previous_scanline >= 144){
             frame_count++;
             
-            // Render to SDL window
             display_render(&display, &ppu);
             
-            // Optional: Print debug info occasionally
-            if (frame_count % 60 == 0) {
-                printf("[Frame %llu] Rendered\n", frame_count);
-            }
+            // if (frame_count % 60 == 0) {
+            //     printf("[Frame %llu] Rendered\n", frame_count);
+            // }
         }
 
         previous_scanline = current_scanline;

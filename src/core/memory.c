@@ -132,9 +132,9 @@ u8 memory_read(u16 address){
     
     // I/O (0xFF00-0xFF7F)
     else if (address >= 0xFF00 && address <= 0xFF7F){
-        // if (address == 0xFF00){
-        //     return 0xFF;
-        // }
+        if (address == 0xFF00){
+            return io[0x00];
+        }
         return io[address - 0xFF00];
         
     }
@@ -257,6 +257,18 @@ void memory_write(u16 address, u8 value){
             io[0x04] = 0;
             return;
         }
+
+        // OAM DMA transfer (FF46)
+        if (address == 0xFF46) {
+            io[0x46] = value;
+
+            u16 src = ((u16)value) << 8;          // source page: XX00–XX9F
+            for (u16 i = 0; i < 0xA0; i++) {       // 160 bytes
+                oam[i] = memory_read(src + i);    // copy into OAM FE00–FE9F
+            }
+            return;
+        }
+        
         io[address - 0xFF00] = value;
         
     }

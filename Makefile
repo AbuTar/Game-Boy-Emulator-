@@ -24,6 +24,7 @@ CORE_SOURCES = $(CORE_DIR)/cpu.c \
                $(CORE_DIR)/cpu_instructions.c \
                $(CORE_DIR)/cpu_helpers.c \
                $(CORE_DIR)/memory.c \
+			   $(CORE_DIR)/ppu_helpers.c \
                $(CORE_DIR)/ppu.c
 
 UI_SOURCES = $(UI_DIR)/display.c \

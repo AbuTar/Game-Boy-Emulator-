@@ -40,6 +40,9 @@ void cpu_init(CPU* cpu){
 
 void cpu_step(CPU* cpu, PPU* ppu){
 
+    // Need to run interrupt logic first
+    cpu_interrupt_handler(cpu);
+
     if (cpu->isHalted){
         cpu->cycles += 4;
         cpu_update_timer(cpu, 4);
@@ -53,9 +56,9 @@ void cpu_step(CPU* cpu, PPU* ppu){
 
     }
 
-    if (cpu->ime){
-        cpu_interrupt_handler(cpu);
-    }
+    // if (cpu->ime){
+    //     cpu_interrupt_handler(cpu);
+    // }
     
     u64 prev_cycles = cpu->cycles;
 
@@ -63,8 +66,9 @@ void cpu_step(CPU* cpu, PPU* ppu){
     cpu_execute(cpu, opcode);
 
     u64 delta = cpu->cycles - prev_cycles;
+    u32 executed_t_cycles = (u32)delta;
 
-    u8 executed_cycles = (delta > 255) ? 255 : (u8)delta; // Calculate cycles of most recently executed instruction
+    u8 executed_cycles = (u8)(executed_t_cycles > 255) ? 255 : (u8)executed_t_cycles; // Calculate cycles of most recently executed instruction
     cpu_update_timer(cpu, executed_cycles); // Update timer
 
     // Update Graphics
