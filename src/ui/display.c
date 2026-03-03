@@ -112,13 +112,29 @@ bool display_handle_input(Display* display) {
                     if (current_speed == 1.0f) {
                         ppu_set_speed(1.5f);
                         printf("Speed: 1.5x\n");
-                    } else if (current_speed == 1.5f) {
+                    } 
+                    
+                    else if (current_speed == 1.5f) {
                         ppu_set_speed(2.0f);
                         printf("Speed: 2.0x\n");
-                    } else if (current_speed == 2.0f) {
+                    } 
+                    
+                    else if (current_speed == 2.0f) {
                         ppu_set_speed(3.0f);
                         printf("Speed: 3.0x\n");
-                    } else {
+                    } 
+
+                    else if (current_speed == 3.0f) {
+                        ppu_set_speed(4.0f);
+                        printf("Speed: 3.0x\n");
+                    } 
+
+                    else if (current_speed == 4.0f) {
+                        ppu_set_speed(5.0f);
+                        printf("Speed: 3.0x\n");
+                    } 
+                    
+                    else {
                         ppu_set_speed(1.0f);
                         printf("Speed: 1.0x\n");
                     }

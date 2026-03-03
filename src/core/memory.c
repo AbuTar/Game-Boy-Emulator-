@@ -25,7 +25,7 @@ static u8* cart_rom = NULL; // Think of this as the cartridge contents
 static size_t rom_size = 0;
 
 // Memory Banks can be their own arrays
-static u8 eram[0x2000]; // external RAM
+static u8 eram[0x8000]; // external RAM
 static u8 vram[0x2000]; // 0x8000 - 0x9FFFF
 static u8 wram[0x2000];// 0xC000 - DxFFFF
 static u8 oam[0xA0]; // 0xFE00 - FE9F
@@ -101,7 +101,20 @@ u8 memory_read(u16 address){
     // External RAM Bank (0xA000-0xBFFF)
     else if (address >= 0xA000 && address <= 0xBFFF){
 
-        if (!enable_ram) return 0xFF;
+        if (!enable_ram){
+            return 0xFF;
+        }
+
+        if (mbc_byte == 3){
+            if (rom_bank <= 0x03){
+                u16 offset = (ram_bank * 0x2000) + (address - 0xA000);
+                return eram[offset];
+            }
+
+            else{
+                return 0xFF;
+            }
+        }
 
         if (mbc_byte == 1 && bank_mode == 1){
             return eram[address - 0xA000]; // Need to do ASAP
@@ -204,6 +217,26 @@ void memory_write(u16 address, u8 value){
             }
         }
 
+        // MBC3
+
+        else if (mbc_type == 3) {
+            if (address <= 0x1FFF) {
+                enable_ram = ((value & 0x0F) == 0x0A);
+            }
+            else if (address <= 0x3FFF) {
+                rom_bank = value & 0x7F; // ROM BANK Number
+                if (rom_bank == 0) rom_bank = 1;
+            }
+            else if (address <= 0x5FFF) {
+                // RAM Bank Number (0x00-0x03) or RTC (0x08-0x0C)
+                ram_bank = value;
+            }
+            else if (address <= 0x7FFF) {
+                // Latch Clock Data (RTC) - not implemented
+            }
+            return;
+        }
+
         return;
 
     }
@@ -222,6 +255,15 @@ void memory_write(u16 address, u8 value){
             eram[address - 0xA000] = value;
             return;
         }
+
+        if (mbc_type == 3) {
+            if (ram_bank <= 0x03) {
+                u16 offset = (ram_bank * 0x2000) + (address - 0xA000);
+                eram[offset] = value;
+            }
+            // TO-DO : Implement RTC registers
+            return;
+    }
 
         eram[address - 0xA000] = value;
     }
@@ -321,6 +363,12 @@ void memory_load_rom(u8* data, size_t size) {
         case 0x03: mbc_type = 1; break; // MBC1 + RAM + BATTERY
         case 0x05: mbc_type = 2; break; // MBC2 
         case 0x06: mbc_type = 2; break; // MBC2 + BATTERY
+        case 0x0F: mbc_type = 3; break; // MBC3 + TIMER + BATTERY
+        case 0x10: mbc_type = 3; break; // MBC3 + TIMER + RAM + BATTERY
+        case 0x11: mbc_type = 3; break; // MBC3
+        case 0x12: mbc_type = 3; break; // MBC3 + RAM
+        case 0x13: mbc_type = 3; break; // MBC3 + RAM + BATTERY
+
         default: mbc_type = 0; break; // Unsupported so treat as ROM
     }
 

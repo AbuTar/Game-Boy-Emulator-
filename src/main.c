@@ -105,9 +105,9 @@ int main(int argc, char* argv[]){
             
             display_render(&display, &ppu);
             
-            // if (frame_count % 60 == 0) {
-            //     printf("[Frame %llu] Rendered\n", frame_count);
-            // }
+            if (frame_count % 60 == 0) {
+                printf("[Frame %llu] | PC: 0x%04X | A: 0x%02X | LCDC: 0x%02X\n", frame_count, cpu.pc, cpu.A, memory_read(0xFF40));
+            }
         }
 
         previous_scanline = current_scanline;
