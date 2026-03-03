@@ -80,6 +80,8 @@ int main(int argc, char* argv[]){
     u8 previous_scanline = 0;
     u64 frame_count = 0;
     bool running = true;
+    float speed = 1.0f;  // Not used, just for function signature
+
 
     while (running){
         // Handle input (returns false if user wants to quit)

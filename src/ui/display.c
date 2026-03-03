@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "display.h"
 #include "input.h"
+#include "ppu.h"
 
 bool display_init(Display* display, int scale) {
     display->scale = scale;
@@ -103,6 +104,26 @@ bool display_handle_input(Display* display) {
                     input_button_press(BUTTON_SELECT);
                     printf("SELECT pressed\n");
                     break;
+
+                case SDLK_TAB:
+                {
+                    float current_speed = ppu_get_speed();
+                    
+                    if (current_speed == 1.0f) {
+                        ppu_set_speed(1.5f);
+                        printf("Speed: 1.5x\n");
+                    } else if (current_speed == 1.5f) {
+                        ppu_set_speed(2.0f);
+                        printf("Speed: 2.0x\n");
+                    } else if (current_speed == 2.0f) {
+                        ppu_set_speed(3.0f);
+                        printf("Speed: 3.0x\n");
+                    } else {
+                        ppu_set_speed(1.0f);
+                        printf("Speed: 1.0x\n");
+                    }
+                }
+                break;
 
 
                 // D-PAD

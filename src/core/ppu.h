@@ -68,4 +68,8 @@ void ppu_check_lyc_interrupt(void);
 void ppu_request_mode_interrupt(u8 mode);
 
 void ppu_sort_sprites(Sprite* sprites, int count);
+
+void ppu_set_speed(float speed);
+float ppu_get_speed(void);
+void ppu_limit_framerate(void);
 #endif

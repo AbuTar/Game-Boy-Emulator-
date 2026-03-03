@@ -1,6 +1,7 @@
 #include <string.h>
 #include "ppu.h"
 #include "memory.h"
+#include <SDL3/SDL.h>
 
 // Window line counter (increments only on scanlines where the window is actually drawn)
 static u8 s_window_line = 0;
@@ -284,6 +285,8 @@ void ppu_step(PPU* ppu, u8 cycle_count){
             ppu_set_mode(PPU_MODE_VBLANK);
             ppu_request_mode_interrupt(PPU_MODE_VBLANK);
             request_interrupt(0x01); // interrupt
+            ppu_limit_framerate();
+            
         }
         else if (ppu->current_scanline >= 154){
             
@@ -340,4 +343,35 @@ void ppu_step(PPU* ppu, u8 cycle_count){
             }
         }
     }
+}
+
+static u64 last_frame_time = 0;
+static float speed_multiplier = 1.0f;
+
+void ppu_set_speed(float speed) {
+    speed_multiplier = speed;
+}
+
+float ppu_get_speed(void) {
+    return speed_multiplier;
+}
+
+void ppu_limit_framerate(void) {
+    const double TARGET_FPS = 59.7275;
+    double frame_time_ms = (1000.0 / TARGET_FPS) / speed_multiplier;
+    
+    u64 current_time = SDL_GetTicks();
+    
+    if (last_frame_time == 0) {
+        last_frame_time = current_time;
+        return;
+    }
+    
+    u64 elapsed = current_time - last_frame_time;
+    
+    if (elapsed < (u64)frame_time_ms) {
+        SDL_Delay((u64)frame_time_ms - elapsed);
+    }
+    
+    last_frame_time = SDL_GetTicks();
 }
