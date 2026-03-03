@@ -48,6 +48,6 @@ u8 boot_read(u16 address) {
 void boot_disable(void) {
     if (boot_enabled) {
         boot_enabled = false;
-        printf("✓ Boot sequence complete, switching to cartridge ROM\n");
+        printf("Boot sequence complete, switching to cartridge ROM\n");
     }
 }

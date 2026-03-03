@@ -11,6 +11,11 @@ void clear_memory(void);
 void request_interrupt(uint8_t interrupt_flag);
 void memory_set_joypad_low(u8 low4);
 
+// Saves support
+void memory_load_sram(const u8* data, size_t size);
+size_t memory_get_sram(u8* data_out);
+void sram_mark_dirty(void);
+
 
 
 #endif

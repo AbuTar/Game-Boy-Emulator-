@@ -2,7 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "boot.h"
+#include "sram.h"
 
 
 // Memory Map
@@ -54,6 +56,8 @@ void memory_init(void){
     memset(oam, 0, sizeof(oam));
     memset(io, 0, sizeof(io));
     memset(hram, 0, sizeof(hram));
+    memset(eram, 0, sizeof(eram));
+
     io[0x0F] = 0x00; // IF and IE registers
     ie = 0x00;
     io[0x40] = 0x91;  // LCDC - LCD enabled, BG enabled
@@ -105,8 +109,8 @@ u8 memory_read(u16 address){
             return 0xFF;
         }
 
-        if (mbc_byte == 3){
-            if (rom_bank <= 0x03){
+        if (mbc_type == 3){
+            if (ram_bank <= 0x03){
                 u16 offset = (ram_bank * 0x2000) + (address - 0xA000);
                 return eram[offset];
             }
@@ -116,7 +120,7 @@ u8 memory_read(u16 address){
             }
         }
 
-        if (mbc_byte == 1 && bank_mode == 1){
+        if (mbc_type == 1 && bank_mode == 1){
             return eram[address - 0xA000]; // Need to do ASAP
         }
 
@@ -253,6 +257,7 @@ void memory_write(u16 address, u8 value){
 
         if (mbc_type == 1 && bank_mode == 1){
             eram[address - 0xA000] = value;
+            sram_mark_dirty();
             return;
         }
 
@@ -260,12 +265,14 @@ void memory_write(u16 address, u8 value){
             if (ram_bank <= 0x03) {
                 u16 offset = (ram_bank * 0x2000) + (address - 0xA000);
                 eram[offset] = value;
+                sram_mark_dirty();
             }
             // TO-DO : Implement RTC registers
             return;
     }
 
         eram[address - 0xA000] = value;
+        sram_mark_dirty();
     }
 
     // WRAM Bank (0xC000-0xDFFF)
@@ -398,4 +405,40 @@ void request_interrupt(u8 interrupt_bit){
 void memory_set_joypad_low(u8 low4) {
     // Keep upper bits (selection + unused), replace only low nibble
     io[0x00] = (io[0x00] & 0xF0) | (low4 & 0x0F);
+}
+
+void memory_load_sram(const u8* data, size_t size) {
+    if (size > 0x8000) size = 0x8000;
+    memcpy(eram, data, size);
+}
+
+size_t memory_get_sram(u8* data_out) {
+    // Depending on Cartridge, SRAM size varies
+    size_t sram_size = 0;
+    
+    switch (mbc_byte) {
+        case 0x00: sram_size = 0; break;
+        case 0x01: sram_size = 0; break;
+        case 0x05: sram_size = 0; break;
+        case 0x0F: sram_size = 0; break; 
+        case 0x11: sram_size = 0; break;
+        
+        // 2KB SRAM
+        case 0x02: sram_size = 0x800; break;
+        case 0x06: sram_size = 0x800; break;
+        
+        // 8KB SRAM
+        case 0x03: sram_size = 0x8000; break;
+        case 0x10: sram_size = 0x8000; break;
+        case 0x12: sram_size = 0x8000; break;
+        case 0x13: sram_size = 0x8000; break;
+        
+        default: sram_size = 0; break;
+    }
+    
+    if (sram_size > 0 && data_out) {
+        memcpy(data_out, eram, sram_size);
+    }
+    
+    return sram_size;
 }

@@ -8,6 +8,7 @@
 #include "ui/display.h"
 #include "ui/input.h"
 #include "boot.h"
+#include "sram.h"
 
 
 
@@ -70,6 +71,9 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
+    sram_init(argv[1]);
+
+
     // Initialize SDL display
     if (!display_init(&display, 4)) {  // 4x scale = 640×576 window
         return 1;
@@ -89,14 +93,6 @@ int main(int argc, char* argv[]){
         
         // Execute CPU instruction
         cpu_step(&cpu, &ppu);
-
-        // Serial output (Blargg tests)
-        // u8 output = memory_read(0xFF01);
-        // if (output != 0){
-        //     printf("%c", output);
-        //     fflush(stdout);
-        //     memory_write(0xFF01, 0);        
-        // }
 
         // Render frame when VBlank starts
         u8 current_scanline = memory_read(0xFF44);
@@ -120,6 +116,7 @@ int main(int argc, char* argv[]){
     printf("Final PC: 0x%04X\n", cpu.pc);
     
     // Cleanup
+    sram_cleanup();
     display_cleanup(&display);
     clear_memory();
     return 0;
