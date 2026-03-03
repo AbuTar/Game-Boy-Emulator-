@@ -1,7 +1,7 @@
-#include "display.h"
-#include "input.h"
 #include <SDL3/SDL.h>
 #include <stdio.h>
+#include "display.h"
+#include "input.h"
 
 bool display_init(Display* display, int scale) {
     display->scale = scale;

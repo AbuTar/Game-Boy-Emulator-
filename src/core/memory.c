@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "boot.h"
 
 
 // Memory Map
@@ -63,6 +64,11 @@ void memory_init(void){
 }
 
 u8 memory_read(u16 address){
+
+    // Boot ROM (0x0000-0x00FF) - takes priority when active
+    if (address < 0x0100 && boot_is_active()) {
+        return boot_read(address);
+    }
 
     // ROM Bank (0x0000-0x7FFF)
     if (address <=  0x7FFF){
@@ -258,13 +264,20 @@ void memory_write(u16 address, u8 value){
             return;
         }
 
+        // Boot ROM disable (0xFF50) - any write disables
+        if (address == 0xFF50) {
+            boot_disable();
+            io[0x50] = value;
+            return;
+        }
+
         // OAM DMA transfer (FF46)
         if (address == 0xFF46) {
             io[0x46] = value;
 
-            u16 src = ((u16)value) << 8;          // source page: XX00–XX9F
-            for (u16 i = 0; i < 0xA0; i++) {       // 160 bytes
-                oam[i] = memory_read(src + i);    // copy into OAM FE00–FE9F
+            u16 src = ((u16)value) << 8;
+            for (u16 i = 0; i < 0xA0; i++) {       
+                oam[i] = memory_read(src + i);    
             }
             return;
         }

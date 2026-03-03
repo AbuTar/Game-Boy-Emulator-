@@ -18,7 +18,7 @@ void cpu_init(CPU* cpu){
 
     // Program Counter and Stack Pointer
 
-    cpu-> pc = 0x0100; // GameBoy headers starts here
+    cpu-> pc = 0x0000; // GameBoy headers starts here
     cpu-> sp = 0xFFFE;
 
     // States

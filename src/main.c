@@ -7,6 +7,7 @@
 #include "ppu.h"
 #include "ui/display.h"
 #include "ui/input.h"
+#include "boot.h"
 
 
 
@@ -55,6 +56,7 @@ int main(int argc, char* argv[]){
     Display display;  
     
     memory_init();
+    boot_init();
     cpu_init(&cpu);
     ppu_init(&ppu);
     input_init();
@@ -79,7 +81,7 @@ int main(int argc, char* argv[]){
     u64 frame_count = 0;
     bool running = true;
 
-    while (running && cpu.cycles < 1000000000){
+    while (running){
         // Handle input (returns false if user wants to quit)
         running = display_handle_input(&display);
         
