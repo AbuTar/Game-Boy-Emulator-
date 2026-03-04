@@ -594,7 +594,10 @@ void cpu_update_timer(CPU* cpu, u8 cycles){
     if (cpu->div >= 256) { // If > 256 cycles elapse, DIV reg increments
         cpu->div -= 256; // Accounting for overflow
         u8 div = memory_read(0xFF04);
-        memory_write(0xFF04, div + 1);
+        
+        div++;
+
+       memory_set_io(0x04, div);
     }
 
     // Need to update frequency based on whether the timer is enabled

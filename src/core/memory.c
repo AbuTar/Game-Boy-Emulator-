@@ -412,6 +412,10 @@ void memory_load_sram(const u8* data, size_t size) {
     memcpy(eram, data, size);
 }
 
+void memory_set_io(u8 index, u8 value){
+    io[index] = value;
+}
+
 size_t memory_get_sram(u8* data_out) {
     // Depending on Cartridge, SRAM size varies
     size_t sram_size = 0;

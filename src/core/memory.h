@@ -10,6 +10,7 @@ void memory_load_rom(u8* data, size_t size);
 void clear_memory(void);
 void request_interrupt(uint8_t interrupt_flag);
 void memory_set_joypad_low(u8 low4);
+void memory_set_io(u8 address, u8 integer);
 
 // Saves support
 void memory_load_sram(const u8* data, size_t size);
