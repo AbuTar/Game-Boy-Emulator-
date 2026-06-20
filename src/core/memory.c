@@ -5,6 +5,7 @@
 #include <time.h>
 #include "boot.h"
 #include "sram.h"
+#include "apu.h"
 
 
 // Memory Map
@@ -43,10 +44,11 @@ static u8 rom_bank = 1; // ROM BANK (1-127)
 static u8 ram_bank = 0; // RAM BANK (0-3)
 static u8 bank_mode = 0; // Either using RAM or ROM (1 or 0)
 static u8 mbc_byte = 0x00;
+static APU* attached_apu = NULL;
 
-
-
-
+void memory_attach_apu(APU* apu){
+    attached_apu = apu;
+}
 
 
 void memory_init(void){
@@ -157,6 +159,13 @@ u8 memory_read(u16 address){
     else if (address >= 0xFF00 && address <= 0xFF7F){
         if (address == 0xFF00){
             return io[0x00];
+        }
+
+        if (address >= 0xFF10 && address <= 0xFF3F){
+            if (attached_apu != NULL){
+                return apu_read(attached_apu, address);
+            }
+            return 0xFF;
         }
         return io[address - 0xFF00];
         
@@ -310,6 +319,14 @@ void memory_write(u16 address, u8 value){
 
         if (address == 0xFF04){
             io[0x04] = 0;
+            return;
+        }
+
+        // Sound Registers
+        if (address >= 0xFF10 && address <= 0xFF3F) {
+            if (attached_apu != NULL) {
+                apu_write(attached_apu, address, value);
+            }
             return;
         }
 

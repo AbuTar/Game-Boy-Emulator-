@@ -38,7 +38,7 @@ void cpu_init(CPU* cpu){
     // ppu_init(&ppu);
 }
 
-void cpu_step(CPU* cpu, PPU* ppu){
+void cpu_step(CPU* cpu, PPU* ppu, APU* apu){
 
     // Need to run interrupt logic first
     cpu_interrupt_handler(cpu);
@@ -47,6 +47,7 @@ void cpu_step(CPU* cpu, PPU* ppu){
         cpu->cycles += 4;
         cpu_update_timer(cpu, 4);
         ppu_step(ppu, 4);
+        apu_step(apu, 4);
         return;
     }
 
@@ -73,6 +74,9 @@ void cpu_step(CPU* cpu, PPU* ppu){
 
     // Update Graphics
     ppu_step(ppu, executed_cycles);
+
+    // Update Sound
+    apu_step(apu, executed_cycles);
 
 
 }

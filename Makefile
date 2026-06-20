@@ -25,10 +25,15 @@ CORE_SOURCES = $(CORE_DIR)/cpu.c \
                $(CORE_DIR)/cpu_helpers.c \
                $(CORE_DIR)/memory.c \
 			   $(CORE_DIR)/ppu_helpers.c \
-               $(CORE_DIR)/ppu.c
+			   $(CORE_DIR)/sram.c \
+			   $(CORE_DIR)/boot.c \
+               $(CORE_DIR)/ppu.c \
+			   $(CORE_DIR)/apu.c
 
 UI_SOURCES = $(UI_DIR)/display.c \
-             $(UI_DIR)/input.c
+             $(UI_DIR)/input.c\
+			 $(UI_DIR)/audio.c
+
 
 MAIN_SOURCE = $(SRC_DIR)/main.c
 

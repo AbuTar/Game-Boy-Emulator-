@@ -5,6 +5,7 @@
 #include "types.h"
 #include <stdbool.h>
 #include "ppu.h"
+#include "apu.h"
 
 // LOG 
 #define UNIMPLEMENTED_OPCODES(opcode,pc) \
@@ -60,7 +61,7 @@ void set_sp(CPU* cpu, u16 val);
 // CPU Functions
 
 void cpu_init(CPU* cpu); // Initialises CPU
-void cpu_step(CPU* cpu, PPU* ppu); // Increments PC
+void cpu_step(CPU* cpu, PPU* ppu, APU* apu); // Increments PC
 void cpu_execute(CPU* cpu, u8 opcode); // Executes instruction based on Opcode input
 void cpu_execute_cb(CPU* cpu, u8 opcode); // Executes special instructions 
 void cpu_interrupt_handler(CPU* cpu); // Handles Interrupts

@@ -1,7 +1,9 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 #include <stdint.h>
+#include <stddef.h>
 #include "types.h"
+#include "apu.h"
 
 void memory_init(void);
 u8 memory_read(u16 address);
@@ -16,6 +18,9 @@ void memory_set_io(u8 address, u8 integer);
 void memory_load_sram(const u8* data, size_t size);
 size_t memory_get_sram(u8* data_out);
 void sram_mark_dirty(void);
+
+// APU hookup - call once after apu_init so memory.c can route 0xFF10-0xFF3F
+void memory_attach_apu(APU* apu);
 
 
 
