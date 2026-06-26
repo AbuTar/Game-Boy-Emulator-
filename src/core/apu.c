@@ -483,10 +483,10 @@ static void mix_and_output(APU* apu){
     s32 left_out  = left_mix  * left_vol  * SCALE;
     s32 right_out = right_mix * right_vol * SCALE;
 
-    if (left_out  >  32767) left_out  =  32767;
-    if (left_out  < -32768) left_out  = -32768;
-    if (right_out >  32767) right_out =  32767;
-    if (right_out < -32768) right_out = -32768;
+    if (left_out  >  44149) left_out  =  44149;
+    if (left_out  < -44150) left_out  = -44150;
+    if (right_out >  44149) right_out =  44149;
+    if (right_out < -44150) right_out = -44150;
 
     push_sample(apu, (s16)left_out, (s16)right_out);
 }
@@ -497,7 +497,7 @@ static void mix_and_output(APU* apu){
 #define GB_CLOCK_HZ      4194304u
 void apu_step(APU* apu, u8 t_cycles){
 
-    // When powered off, still emit silent samples so the audio clock doesn't starve
+    // When powered off, still emit silent samples to keep clock synced
     if (!apu->power_on){
         apu->sample_div_counter += (u32)t_cycles * APU_SAMPLE_RATE;
         while (apu->sample_div_counter >= GB_CLOCK_HZ){
